@@ -76,6 +76,13 @@ class AISDataManager():
         filteredDF = filteredDF[filteredDF["LON"] <= lonMax]
         filteredDF = filteredDF[filteredDF["LAT"] >= latMin]
         filteredDF = filteredDF[filteredDF["LAT"] <= latMax]
+        '''
+        filteredDF = dFObj[(dFObj["LON"] >= lonMin) \
+                    & (dFObj["LON"] <= lonMax) \
+                    & (dFObj["LAT"] >= latMin) \
+                    & (dFObj["LAT"] <= latMax) \
+                     ]
+        '''
         return filteredDF
 
     #will return DF with extra column
@@ -103,6 +110,16 @@ class AISDataManager():
             return ret
         else:
             return retVal
+
+    #to drop some columns
+    #to reduce memory usage
+    def drop_columns(self,dFObj):
+        retDF = dFObj.drop(columns=['SOG', 'COG', 'Heading',\
+        'VesselName', 'IMO', 'CallSign', \
+        'VesselType', 'Status', 'Length',\
+        'Width', 'Draft', 'Cargo'])
+        return retDF
+
 
 if __name__ == '__main__':
     aDMTest = AISDataManager()
