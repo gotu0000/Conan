@@ -120,6 +120,19 @@ class AISDataManager():
         'Width', 'Draft', 'Cargo'])
         return retDF
 
+    def get_data_for_one_vessel(self,fileList,mMSINum):
+        retDF = pd.DataFrame() 
+        for i in fileList:
+            #load data from file
+            data, retVal = self.load_data_from_csv(i)
+            if(retVal == c.errNO['SUCCESS']):
+                #get data for one type of vessel
+                vesselData = self.filter_based_on_mmsi(data,mMSINum)
+                retDF = retDF.append(vesselData,ignore_index = True)
+            else:
+                break
+        return retDF, retVal
+
 
 if __name__ == '__main__':
     aDMTest = AISDataManager()
