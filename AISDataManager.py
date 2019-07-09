@@ -73,16 +73,9 @@ class AISDataManager():
 
     def filter_based_on_lon_lat(self, dFObj, lonMin, lonMax, latMin, latMax):
         filteredDF = dFObj[dFObj["LON"] >= lonMin]
-        filteredDF = filteredDF[filteredDF["LON"] <= lonMax]
+        filteredDF = filteredDF[filteredDF["LON"] < lonMax]
         filteredDF = filteredDF[filteredDF["LAT"] >= latMin]
-        filteredDF = filteredDF[filteredDF["LAT"] <= latMax]
-        '''
-        filteredDF = dFObj[(dFObj["LON"] >= lonMin) \
-                    & (dFObj["LON"] <= lonMax) \
-                    & (dFObj["LAT"] >= latMin) \
-                    & (dFObj["LAT"] <= latMax) \
-                     ]
-        '''
+        filteredDF = filteredDF[filteredDF["LAT"] < latMax]
         return filteredDF
 
     #will return DF with extra column
@@ -132,6 +125,11 @@ class AISDataManager():
             else:
                 break
         return retDF, retVal
+
+    #assumpution with the time 
+    def filter_based_on_time_stamp(self, dFObj, timeColName, startTime, endTime):
+        filteredDF = dFObj[(dFObj[timeColName] >= startTime) & (dFObj[timeColName] < endTime)]
+        return filteredDF
 
 
 if __name__ == '__main__':
