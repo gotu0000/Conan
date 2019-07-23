@@ -64,6 +64,10 @@ class AISDataManager():
     #specific to AIS kind of data
     def get_list_of_unique_mmsi(self, dFObj):
         return self.get_list_of_unique_enries(dFObj,"MMSI")
+
+    #specific to AIS kind of data
+    def get_list_of_unique_type(self, dFObj):
+        return self.get_list_of_unique_enries(dFObj,"VesselType")
         
     #get all the entires of one particular MMSI     
     def filter_based_on_mmsi(self, dFObj, mMSINum):
