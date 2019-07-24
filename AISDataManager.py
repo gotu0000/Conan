@@ -217,7 +217,8 @@ class AISDataManager():
                                 interpDict.update({"MMSI" : [tempMMSI]})
 
                             if('BaseDateTime' in secDF.columns):
-                                tempBST = tS
+                                # tempBST = tS
+                                tempBST = pd.to_datetime(tS).strftime("%Y-%m-%dT%H:%M:%S")
                                 interpDict.update({"BaseDateTime" : [tempBST]})
 
                             if('LAT' in secDF.columns):

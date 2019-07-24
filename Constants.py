@@ -7,5 +7,5 @@ errNO = {\
 	,'DUMMY':1\
 }
 
-SEC_START_TIME = '2017-01-01 00:00:00'
+SEC_START_TIME = '2015-01-01 00:00:00'
 SEC_COL_NAME = 'Seconds'
