@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np 
 import Constants as c
 import Interpolation as lIP
+import GeoCompute as gC
 
 #this class helps to handle
 #raw AIS file 
@@ -32,6 +33,8 @@ class AISDataManager():
 
     #excluding endIndex
     #saves cropped df into csv 
+    #this will change the original dFObj
+    #if we try to modify the returned dataframe 
     def crop_df_and_save_csv(self, dFObj, startIndex, endIndex,fileName = None):
         #get number of rows and columns
         #assumption is dFObj has atleast two dimensions 
@@ -58,36 +61,44 @@ class AISDataManager():
     #get unique entries of data frame
     def get_list_of_unique_enries(self, dFObj, columnName):
         #check for corresponding column
+        #FIXME put this into try cache
         ret = dFObj[columnName].unique()
         return ret
 
     #specific to AIS kind of data
     def get_list_of_unique_mmsi(self, dFObj):
-        return self.get_list_of_unique_enries(dFObj,"MMSI")
+        return self.get_list_of_unique_enries(dFObj,c.MMSI_COL_NAME)
 
     #specific to AIS kind of data
     def get_list_of_unique_type(self, dFObj):
-        return self.get_list_of_unique_enries(dFObj,"VesselType")
+        return self.get_list_of_unique_enries(dFObj,c.VESSEL_TYPE_COL_NAME)
         
     #get all the entires of one particular MMSI     
     def filter_based_on_mmsi(self, dFObj, mMSINum):
         #filtered data frame
         #based on MMSI number
-        filteredDF = dFObj[dFObj["MMSI"] == mMSINum]
+        filteredDF = dFObj[dFObj[c.MMSI_COL_NAME] == mMSINum]
         return filteredDF
 
+    #to extract data limited to regeion
     def filter_based_on_lon_lat(self, dFObj, lonMin, lonMax, latMin, latMax):
-        filteredDF = dFObj[dFObj["LON"] >= lonMin]
-        filteredDF = filteredDF[filteredDF["LON"] < lonMax]
-        filteredDF = filteredDF[filteredDF["LAT"] >= latMin]
-        filteredDF = filteredDF[filteredDF["LAT"] < latMax]
+        filteredDF = dFObj[(dFObj[c.LON_COL_NAME] >= lonMin) \
+                            & (dFObj[c.LON_COL_NAME] < lonMax) \
+                            & (dFObj[c.LAT_COL_NAME] >= latMin) \
+                            & (dFObj[c.LAT_COL_NAME] < latMax) \
+                            ]
         return filteredDF
 
-    #will return DF with extra column
-    def format_time(self, dFObj, colName):
-        formattedDF = dFObj.copy()
-        formattedDF.loc[:, colName] = pd.to_datetime(formattedDF['BaseDateTime'], format='%Y-%m-%dT%H:%M:%S')
-        return formattedDF
+    #will return same DF with extra column
+    #this will change the original DF if we change the return value
+    def formate_time(self, dFObj, colName):
+        #check for whether date time column is already there or not
+        if(colName in dFObj.columns):
+            if(dFObj.loc[:, colName].dtypes == np.dtype('object')):
+                dFObj[colName] = pd.to_datetime(dFObj[colName])
+        else:
+            dFObj.loc[:, colName] = pd.to_datetime(dFObj['BaseDateTime'], format='%Y-%m-%dT%H:%M:%S')
+        return dFObj
 
     def get_df_for_targeted_area(self, fileName, lonMin, lonMax, latMin, latMax):
         #load df from a file
@@ -122,6 +133,8 @@ class AISDataManager():
         retDF = dFObj.drop(columns = colList)
         return retDF
 
+    #this is to generate data for one vessel
+    #append operation may be time consuming
     def get_data_for_one_vessel(self,fileList,mMSINum):
         retDF = pd.DataFrame() 
         for i in fileList:
@@ -165,18 +178,16 @@ class AISDataManager():
         filteredDF = dFObj.copy()
         filteredDF[timeColName] = pd.to_datetime(filteredDF[timeColName])
 
-        #2 years prior to the dat we had
-        #FIXME
-        # startTime = pd.to_datetime('2017-01-01 00:00:00')
+        #to generate time delta instance
         startTime = pd.to_datetime(c.SEC_START_TIME)
 
+        #compute the difference
+        #this converts into time delta
         secCol = filteredDF[timeColName].copy()
         secCol = secCol - startTime
 
-        #FIXME 'Seconds' is hardcoded here
         filteredDF[c.SEC_COL_NAME] = secCol.dt.total_seconds()
 
-        # print(filteredDF.dtypes)
         return filteredDF
 
     def get_time_stamp_data(self, dFObj, timeColName, timeStampFile):
@@ -323,8 +334,62 @@ class AISDataManager():
                 continue
         return retDF
 
+    #this helps to generate timely data
+    def get_time_stamp_interpolated_data(self, dFObj, timeColName, timeStampFile):
+        tSDF = self.get_time_stamp_data(dFObj, timeColName, timeStampFile)
+        dFCopy = dFObj.copy()
+        retDF = dFCopy.append(tSDF, ignore_index = True)
+        self.formate_time(retDF,'DateTime')
+        sortedRet = retDF.sort_values(by='DateTime')
+        return sortedRet
+
+    #this function takes houurly time stamped interpolated data
+    #then based on cropped dF, it will compute the distance
+    def get_time_stamp_data_with_distance(self, dFObj, timeColName, timeStampFile):
+        #make empty dataframe to return
+        retDF = pd.DataFrame()
+        #FIXME check for file missing
+        timeColSeries = dFObj[timeColName].tolist()
+        # print(timeColSeries)
+        timeSteps = [line.rstrip('\n') for line in open(timeStampFile)]
+
+        for tS in range(len(timeSteps)-1):
+            lowerVal = timeSteps[tS]
+            upperVal = timeSteps[tS+1]
+            if(lowerVal in timeColSeries) and (upperVal in timeColSeries):
+                print(lowerVal, upperVal)
+
+                lowerIndex = timeColSeries.index(lowerVal)
+                upperIndex = timeColSeries.index(upperVal)
+
+                # print(lowerIndex, upperIndex)
+                tempDF = dFObj.iloc[lowerIndex:upperIndex+1,:].copy()
+                tempLON = tempDF['LON']
+                tempLAT = tempDF['LAT']
+                tempAvgSOG = tempDF['SOG'].mean()
+
+                #compute the temporary distance betwwen hourly time stamp data
+                tempDistance = 0
+                for ii in range(tempLON.shape[0]-1):
+                    lon1 = tempLON.iloc[ii]
+                    lat1 = tempLAT.iloc[ii]
+                    lon2 = tempLON.iloc[ii+1]
+                    lat2 = tempLAT.iloc[ii+1]
+                    # print(lon1,lat1,lon2,lat2)
+                    tempDistance = tempDistance + gC.compute_distance(lon1, lat1, lon2, lat2)
+                #get the last row which contains value at time stamp
+                interpDF = pd.DataFrame(tempDF.iloc[-1]).transpose()
+                interpDF.loc[:, "TotalDistance"] = tempDistance
+                interpDF.loc[:, "AvgSOG"] = tempAvgSOG
+                tempAngle = gC.compute_heading(tempLON.iloc[0], tempLAT.iloc[0], tempLON.iloc[-1], tempLAT.iloc[-1])
+                interpDF.loc[:, "Angle"] = tempAngle
+                retDF = retDF.append(interpDF, ignore_index = True, sort = False)
+        print(retDF)
+        return retDF
+            
 
 if __name__ == '__main__':
+    '''
     aDMTest = AISDataManager()
     lAData,retVal = aDMTest.load_data_from_csv("./Data/AIS_2017_LA/AIS_2017_Zone_11/AIS_2017_01_Zone11_Cropped.csv")
     print(retVal)
@@ -332,6 +397,7 @@ if __name__ == '__main__':
         ,-119.50, -117.10, 32.00, 34.20\
         ,"./Data/AIS_2017_LA/LAPort/AIS_2017_01_LA_Cropped.csv"
         )
+    '''
     # croppedData,retVal1,retVal2 = aDMTest.crop_df_and_save_csv(lAData,0,1000,"./Data/AIS_2017_LA/AIS_2017_Zone_11/AIS_2017_01_Zone11_Cropped_.csv")
     # print(retVal1)
     # print(retVal2)
@@ -340,7 +406,16 @@ if __name__ == '__main__':
     # print(c.errNO)
 
     '''
-    newDF = aDMTest.format_time(lAData,'DateTime')
+    newDF = aDMTest.formate_time(lAData,'DateTime')
     newDF = newDF.sort_values(by='DateTime')
     aDMTest.save_data_to_csv(newDF,"./Data/AIS_2017_LA/AIS_2017_01_Zone11/AIS_ASCII_by_UTM_Month/2017_v2/AIS_2017_01_Zone11_Cropped_Sorted.csv")
     '''
+    ###########################
+    #Test case for formate time
+    aDMTest = AISDataManager()
+    lAData,retVal = aDMTest.load_data_from_csv("Dummy.csv")
+    if(retVal == c.errNO['SUCCESS']):
+        aDMTest.formate_time(lAData, 'DateTime')
+        print(lAData.dtypes)
+    else:
+        print("Erro in loading file")
