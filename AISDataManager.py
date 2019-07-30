@@ -150,6 +150,7 @@ class AISDataManager():
 
     #assumpution with the time 
     def filter_based_on_time_stamp(self, dFObj, timeColName, startTime, endTime):
+        self.formate_time(dFObj,timeColName)
         filteredDF = dFObj[(dFObj[timeColName] >= startTime) & (dFObj[timeColName] < endTime)]
         return filteredDF
 
@@ -351,6 +352,7 @@ class AISDataManager():
         #FIXME check for file missing
         timeColSeries = dFObj[timeColName].tolist()
         # print(timeColSeries)
+        #read timestamps file
         timeSteps = [line.rstrip('\n') for line in open(timeStampFile)]
 
         for tS in range(len(timeSteps)-1):

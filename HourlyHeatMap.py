@@ -90,30 +90,22 @@ def compute_heat_map(ipFile,opFile):
 														)
 			vesselList = aISDM.get_list_of_unique_mmsi(boundedDF)
 			npHeatMap[i] = len(vesselList)
-			# if(npHeatMap[i] > 0):
-			# 	print(boundaryArray[i])
-			# 	print(npHeatMap[i])
+
 		np.save(opFile, npHeatMap)
 	else:
 		print("Something wrong with loading")
 	return npHeatMap
 
-# ret = compute_heat_map("Dummy.csv"\
-# 				,"Dummy.npy"
-# 				)
-
-# print(ret)
-
+#FIXME get this from config file
 iPDirectory = "/home/jcharla/PDX/LiporLab/Conan/Data/AIS_2017_LA/LAPort/Hourly/"
 oPDirectory = "/home/jcharla/PDX/LiporLab/Conan/Data/AIS_2017_LA/LAPort/HourlyHeatMap/"
 ipOpFileList = []
-# for i in range(0,10):
+
+#FIXME get this from file
 for i in range(0,8760):
 	ipName = iPDirectory + str(i) + '.csv'
 	opName = oPDirectory + str(i) + '.npy'
 	ipOpFileList.append([ipName,opName])
-	# print(ipOpFileList[-1])
-
 
 numCores = multiprocessing.cpu_count()
 print(numCores)
