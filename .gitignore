@@ -1,1 +1,3 @@
 Data
+*.csv
+Common/__pycache__
