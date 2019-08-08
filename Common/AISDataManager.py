@@ -93,12 +93,13 @@ class AISDataManager():
     #this will change the original DF if we change the return value
     def formate_time(self, dFObj, colName):
         #check for whether date time column is already there or not
-        if(colName in dFObj.columns):
-            if(dFObj.loc[:, colName].dtypes == np.dtype('object')):
-                dFObj[colName] = pd.to_datetime(dFObj[colName])
+        retDF = dFObj.copy()
+        if(colName in retDF.columns):
+            if(retDF.loc[:, colName].dtypes == np.dtype('object')):
+                retDF.loc[:, colName] = pd.to_datetime(retDF[colName])
         else:
-            dFObj.loc[:, colName] = pd.to_datetime(dFObj[c.BASE_TIME_COL_NAME], format='%Y-%m-%dT%H:%M:%S')
-        return dFObj
+            retDF.loc[:, colName] = pd.to_datetime(retDF[c.BASE_TIME_COL_NAME], format='%Y-%m-%dT%H:%M:%S')
+        return retDF
 
     def get_df_for_targeted_area(self, fileName, lonMin, lonMax, latMin, latMax):
         #load df from a file
@@ -146,8 +147,8 @@ class AISDataManager():
 
     #assumpution with the time 
     def filter_based_on_time_stamp(self, dFObj, timeColName, startTime, endTime):
-        self.formate_time(dFObj,timeColName)
-        filteredDF = dFObj[(dFObj[timeColName] >= startTime) & (dFObj[timeColName] < endTime)]
+        tempDF = self.formate_time(dFObj,timeColName)
+        filteredDF = tempDF[(tempDF[timeColName] >= startTime) & (tempDF[timeColName] < endTime)]
         return filteredDF
 
     #function to get lower bound of time
@@ -336,7 +337,7 @@ class AISDataManager():
         tSDF = self.get_time_stamp_data(dFObj, timeColName, timeStampFile)
         dFCopy = dFObj.copy()
         retDF = dFCopy.append(tSDF, ignore_index = True)
-        self.formate_time(retDF,'DateTime')
+        retDF = self.formate_time(retDF,'DateTime')
         sortedRet = retDF.sort_values(by='DateTime')
         return sortedRet
 
@@ -392,7 +393,7 @@ if __name__ == '__main__':
     aDMTest = AISDataManager()
     lAData,retVal = aDMTest.load_data_from_csv("Dummy.csv")
     if(retVal == c.errNO['SUCCESS']):
-        aDMTest.formate_time(lAData, 'DateTime')
+        lAData = aDMTest.formate_time(lAData, 'DateTime')
         print(lAData.dtypes)
         ###################################
         print(lAData.shape)
