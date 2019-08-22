@@ -3,6 +3,17 @@ import math
 #to compute haversine distance
 from haversine import haversine, Unit
 
+
+##
+## @brief      Calculates the distance in KM between two GPS formate.
+##
+## @param      lon1  The lon 1
+## @param      lat1  The lat 1
+## @param      lon2  The lon 2
+## @param      lat2  The lat 2
+##
+## @return     The distance in KM.
+##
 def compute_distance(lon1,lat1,lon2,lat2):
 	#(LAT,LON) formate
 	startPoint = (lat1, lon1)
@@ -10,6 +21,17 @@ def compute_distance(lon1,lat1,lon2,lat2):
 	distanceKM = haversine(startPoint, endPoint)
 	return distanceKM
 
+
+##
+## @brief      Calculates the heading in degrees.
+##
+## @param      lon1  The lon 1
+## @param      lat1  The lat 1
+## @param      lon2  The lon 2
+## @param      lat2  The lat 2
+##
+## @return     The heading.
+##
 def compute_heading(lon1,lat1,lon2,lat2):
 	diffLong = math.radians(lon2 - lon1)
 
