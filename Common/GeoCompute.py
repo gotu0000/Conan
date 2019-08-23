@@ -46,7 +46,11 @@ def compute_heading(lon1,lat1,lon2,lat2):
 
 	compassBearing = math.atan2(x, y)
 
-	return (-1*math.degrees(compassBearing))+90
+	retVal = (-1*math.degrees(compassBearing))+90
+	if(retVal > 180):
+		return (-360 + retVal)
+	else:
+		return retVal
 
 if __name__ == '__main__':
 	####################################

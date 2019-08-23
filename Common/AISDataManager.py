@@ -184,17 +184,22 @@ class AISDataManager():
         secCol = filteredDF[timeColName].copy()
         secCol = secCol - startTime
 
+        #convert into seconds
         filteredDF[c.SEC_COL_NAME] = secCol.dt.total_seconds()
 
         return filteredDF
 
-    def get_time_stamp_data(self, dFObj, timeColName, timeStampFile):
+    #useful for single vessels data
+    #where MMSI would be same
+    #this data is useful for modelling time series
+    def get_time_stamp_data(self, dFObj, timeColName, timeStampFile, neighbourWindow = 3600):
         #make empty dataframe to return
         retDF = pd.DataFrame(columns=dFObj.columns)
         #append column for seconds 
         secDF = self.append_seconds_column(dFObj,timeColName)
         #FIXME check for file missing
         timeSteps = [line.rstrip('\n') for line in open(timeStampFile)]
+        #iterate though time stamps
         for tS in timeSteps:
             #get the lower value
             lowerValue, retVal = self.get_left_time_stamp_values(secDF,timeColName,tS)
@@ -218,98 +223,98 @@ class AISDataManager():
                         #check for the data
                         #only register those enties
                         #when there is data between neighbouring time window
-                        if((secDiffL < 3600) and (secDiffR < 3600)):
+                        if((secDiffL < neighbourWindow) and (secDiffR < neighbourWindow)):
 
                             interpDict = {}
-                            if('MMSI' in secDF.columns):
-                                tempMMSI = lowerValue['MMSI']
-                                interpDict.update({"MMSI" : [tempMMSI]})
+                            if(c.MMSI_COL_NAME in secDF.columns):
+                                tempMMSI = lowerValue[c.MMSI_COL_NAME]
+                                interpDict.update({c.MMSI_COL_NAME : [tempMMSI]})
 
-                            if('BaseDateTime' in secDF.columns):
+                            if(c.BASE_TIME_COL_NAME in secDF.columns):
                                 # tempBST = tS
                                 tempBST = pd.to_datetime(tS).strftime("%Y-%m-%dT%H:%M:%S")
-                                interpDict.update({"BaseDateTime" : [tempBST]})
+                                interpDict.update({c.BASE_TIME_COL_NAME : [tempBST]})
 
-                            if('LAT' in secDF.columns):
-                                tempLAT = lIP.apply_linear_interpolation(lowerValue['Seconds']\
-                                    ,lowerValue['LAT']\
-                                    ,upperValue['Seconds']\
-                                    ,upperValue['LAT']\
+                            if(c.LAT_COL_NAME in secDF.columns):
+                                tempLAT = lIP.apply_linear_interpolation(lowerValue[c.SEC_COL_NAME]\
+                                    ,lowerValue[c.LAT_COL_NAME]\
+                                    ,upperValue[c.SEC_COL_NAME]\
+                                    ,upperValue[c.LAT_COL_NAME]\
                                     ,(pd.to_datetime(tS) - pd.to_datetime(c.SEC_START_TIME)).total_seconds()
                                     )
-                                interpDict.update({"LAT" : [tempLAT]})
+                                interpDict.update({c.LAT_COL_NAME : [tempLAT]})
 
-                            if('LON' in secDF.columns):
-                                tempLON = lIP.apply_linear_interpolation(lowerValue['Seconds']\
-                                    ,lowerValue['LON']\
-                                    ,upperValue['Seconds']\
-                                    ,upperValue['LON']\
+                            if(c.LON_COL_NAME in secDF.columns):
+                                tempLON = lIP.apply_linear_interpolation(lowerValue[c.SEC_COL_NAME]\
+                                    ,lowerValue[c.LON_COL_NAME]\
+                                    ,upperValue[c.SEC_COL_NAME]\
+                                    ,upperValue[c.LON_COL_NAME]\
                                     ,(pd.to_datetime(tS) - pd.to_datetime(c.SEC_START_TIME)).total_seconds()
                                     )
-                                interpDict.update({"LON" : [tempLON]})
+                                interpDict.update({c.LON_COL_NAME : [tempLON]})
 
-                            if('SOG' in secDF.columns):
-                                tempSOG = lIP.apply_linear_interpolation(lowerValue['Seconds']\
-                                    ,lowerValue['SOG']\
-                                    ,upperValue['Seconds']\
-                                    ,upperValue['SOG']\
+                            if(c.SOG_COL_NAME in secDF.columns):
+                                tempSOG = lIP.apply_linear_interpolation(lowerValue[c.SEC_COL_NAME]\
+                                    ,lowerValue[c.SOG_COL_NAME]\
+                                    ,upperValue[c.SEC_COL_NAME]\
+                                    ,upperValue[c.SOG_COL_NAME]\
                                     ,(pd.to_datetime(tS) - pd.to_datetime(c.SEC_START_TIME)).total_seconds()
                                     )
-                                interpDict.update({"SOG" : [tempSOG]})
+                                interpDict.update({c.SOG_COL_NAME : [tempSOG]})
 
-                            if('COG' in secDF.columns):
-                                tempCOG = lIP.apply_linear_interpolation(lowerValue['Seconds']\
-                                    ,lowerValue['COG']\
-                                    ,upperValue['Seconds']\
-                                    ,upperValue['COG']\
+                            if(c.COG_COL_NAME in secDF.columns):
+                                tempCOG = lIP.apply_linear_interpolation(lowerValue[c.SEC_COL_NAME]\
+                                    ,lowerValue[c.COG_COL_NAME]\
+                                    ,upperValue[c.SEC_COL_NAME]\
+                                    ,upperValue[c.COG_COL_NAME]\
                                     ,(pd.to_datetime(tS) - pd.to_datetime(c.SEC_START_TIME)).total_seconds()
                                     )
-                                interpDict.update({"COG" : [tempCOG]})
+                                interpDict.update({c.COG_COL_NAME : [tempCOG]})
 
-                            if('Heading' in secDF.columns):
-                                tempHeading = lIP.apply_linear_interpolation(lowerValue['Seconds']\
-                                    ,lowerValue['Heading']\
-                                    ,upperValue['Seconds']\
-                                    ,upperValue['Heading']\
+                            if(c.HEADING_COL_NAME in secDF.columns):
+                                tempHeading = lIP.apply_linear_interpolation(lowerValue[c.SEC_COL_NAME]\
+                                    ,lowerValue[c.HEADING_COL_NAME]\
+                                    ,upperValue[c.SEC_COL_NAME]\
+                                    ,upperValue[c.HEADING_COL_NAME]\
                                     ,(pd.to_datetime(tS) - pd.to_datetime(c.SEC_START_TIME)).total_seconds()
                                     )
-                                interpDict.update({"Heading" : [tempHeading]})
+                                interpDict.update({c.HEADING_COL_NAME : [tempHeading]})
 
-                            if('VesselName' in secDF.columns):
-                                tempVesselName = lowerValue['VesselName']
-                                interpDict.update({"VesselName" : [tempVesselName]})
+                            if(c.VESSEL_NAME_COL_NAME in secDF.columns):
+                                tempVesselName = lowerValue[c.VESSEL_NAME_COL_NAME]
+                                interpDict.update({c.VESSEL_NAME_COL_NAME : [tempVesselName]})
 
-                            if('IMO' in secDF.columns):
-                                tempIMO = lowerValue['IMO']
-                                interpDict.update({"IMO" : [tempIMO]})
+                            if(c.IMO_COL_NAME in secDF.columns):
+                                tempIMO = lowerValue[c.IMO_COL_NAME]
+                                interpDict.update({c.IMO_COL_NAME : [tempIMO]})
 
-                            if('CallSign' in secDF.columns):
-                                tempCallSign = lowerValue['CallSign']
-                                interpDict.update({"CallSign" : [tempCallSign]})
+                            if(c.CALL_SIGN_COL_NAME in secDF.columns):
+                                tempCallSign = lowerValue[c.CALL_SIGN_COL_NAME]
+                                interpDict.update({c.CALL_SIGN_COL_NAME : [tempCallSign]})
 
-                            if('VesselType' in secDF.columns):
-                                tempVesselType = lowerValue['VesselType']
-                                interpDict.update({"VesselType" : [tempVesselType]})
+                            if(c.VESSEL_TYPE_COL_NAME in secDF.columns):
+                                tempVesselType = lowerValue[c.VESSEL_TYPE_COL_NAME]
+                                interpDict.update({c.VESSEL_TYPE_COL_NAME : [tempVesselType]})
 
-                            if('Status' in secDF.columns):
-                                tempStatus = lowerValue['Status']
-                                interpDict.update({"Status" : [tempStatus]})
+                            if(c.STATUS_COL_NAME in secDF.columns):
+                                tempStatus = lowerValue[c.STATUS_COL_NAME]
+                                interpDict.update({c.STATUS_COL_NAME : [tempStatus]})
 
-                            if('Length' in secDF.columns):
-                                tempLength = lowerValue['Length']
-                                interpDict.update({"Length" : [tempLength]})
+                            if(c.LENGTH_COL_NAME in secDF.columns):
+                                tempLength = lowerValue[c.LENGTH_COL_NAME]
+                                interpDict.update({c.LENGTH_COL_NAME : [tempLength]})
 
-                            if('Width' in secDF.columns):
-                                tempWidth = lowerValue['Width']
-                                interpDict.update({"Width" : [tempWidth]})
+                            if(c.WIDTH_COL_NAME in secDF.columns):
+                                tempWidth = lowerValue[c.WIDTH_COL_NAME]
+                                interpDict.update({c.WIDTH_COL_NAME : [tempWidth]})
 
-                            if('Draft' in secDF.columns):
-                                tempDraft = lowerValue['Draft']
-                                interpDict.update({"Draft" : [tempDraft]})
+                            if(c.DRAFT_COL_NAME in secDF.columns):
+                                tempDraft = lowerValue[c.DRAFT_COL_NAME]
+                                interpDict.update({c.DRAFT_COL_NAME : [tempDraft]})
 
-                            if('Cargo' in secDF.columns):
-                                tempCargo = lowerValue['Cargo']
-                                interpDict.update({"Cargo" : [tempCargo]})
+                            if(c.CARGO_COL_NAME in secDF.columns):
+                                tempCargo = lowerValue[c.CARGO_COL_NAME]
+                                interpDict.update({c.CARGO_COL_NAME : [tempCargo]})
 
                             interpDict.update({timeColName : [tS]})                            
                             # interpDF = pd.DataFrame({"MMSI":[tempMMSI]\
@@ -333,12 +338,14 @@ class AISDataManager():
         return retDF
 
     #this helps to generate timely data
+    #and compute the distance feature for timely data
     def get_time_stamp_interpolated_data(self, dFObj, timeColName, timeStampFile):
         tSDF = self.get_time_stamp_data(dFObj, timeColName, timeStampFile)
         dFCopy = dFObj.copy()
         retDF = dFCopy.append(tSDF, ignore_index = True)
         retDF = self.formate_time(retDF,'DateTime')
         sortedRet = retDF.sort_values(by='DateTime')
+        sortedRet  = sortedRet.drop_duplicates(subset ='DateTime')
         return sortedRet
 
     #this function takes houurly time stamped interpolated data
@@ -347,7 +354,10 @@ class AISDataManager():
         #make empty dataframe to return
         retDF = pd.DataFrame()
         #FIXME check for file missing
+        #FIXME doesnt work if column is time stamp 
+        #convert series to series of string then convert into list
         timeColSeries = dFObj[timeColName].tolist()
+
         # print(timeColSeries)
         #read timestamps file
         timeSteps = [line.rstrip('\n') for line in open(timeStampFile)]
@@ -355,17 +365,24 @@ class AISDataManager():
         for tS in range(len(timeSteps)-1):
             lowerVal = timeSteps[tS]
             upperVal = timeSteps[tS+1]
-            if(lowerVal in timeColSeries) and (upperVal in timeColSeries):
-                print(lowerVal, upperVal)
 
+            # print(lowerVal,upperVal)
+            #check for lower and upper time stamp
+            #if both of them are there then only we can get distance
+            if(lowerVal in timeColSeries) and (upperVal in timeColSeries):
+                # print(lowerVal, upperVal)
+
+                #get lower index 
+                #and upper index
                 lowerIndex = timeColSeries.index(lowerVal)
                 upperIndex = timeColSeries.index(upperVal)
 
                 # print(lowerIndex, upperIndex)
                 tempDF = dFObj.iloc[lowerIndex:upperIndex+1,:].copy()
-                tempLON = tempDF['LON']
-                tempLAT = tempDF['LAT']
-                tempAvgSOG = tempDF['SOG'].mean()
+
+                # print(tempDF)
+                tempLON = tempDF[c.LON_COL_NAME]
+                tempLAT = tempDF[c.LAT_COL_NAME]
 
                 #compute the temporary distance betwwen hourly time stamp data
                 tempDistance = 0
@@ -378,27 +395,53 @@ class AISDataManager():
                     tempDistance = tempDistance + gC.compute_distance(lon1, lat1, lon2, lat2)
                 #get the last row which contains value at time stamp
                 interpDF = pd.DataFrame(tempDF.iloc[-1]).transpose()
-                interpDF.loc[:, "TotalDistance"] = tempDistance
-                interpDF.loc[:, "AvgSOG"] = tempAvgSOG
+                interpDF.loc[:, c.TOTAL_DISTANCE_COL_NAME] = tempDistance
                 tempAngle = gC.compute_heading(tempLON.iloc[0], tempLAT.iloc[0], tempLON.iloc[-1], tempLAT.iloc[-1])
-                interpDF.loc[:, "Angle"] = tempAngle
+                interpDF.loc[:, c.ANGLE_COL_NAME] = tempAngle
                 retDF = retDF.append(interpDF, ignore_index = True, sort = False)
-        print(retDF)
+                # print(tempAngle)
+        # print(retDF)
         return retDF
             
 
 if __name__ == '__main__':
-    ###########################
-    #Test case for formate time
+    ##########################################
+    #Test case for formate_time
+    # aDMTest = AISDataManager()
+    # lAData,retVal = aDMTest.load_data_from_csv("Dummy.csv")
+    # if(retVal == c.errNO['SUCCESS']):
+    #     lAData = aDMTest.formate_time(lAData, 'DateTime')
+    #     print(lAData.dtypes)
+    #     print(lAData.shape)
+    #     droppedDF = aDMTest.drop_columns(lAData)
+    #     print(lAData.shape)
+    #     print(droppedDF.shape)
+    # else:
+    #     print("Erro in loading file")
+    ##########################################
+    #Test case for get_time_stamp_data
+    # aDMTest = AISDataManager()
+    # dummyData,retVal = aDMTest.load_data_from_csv("Dummy.csv")
+    # if(retVal == c.errNO['SUCCESS']):
+    #     dummyData = aDMTest.get_time_stamp_data(dummyData, 'DateTime', 'HourlyTimeStamp15To18.txt')
+    #     aDMTest.save_data_to_csv(dummyData,'DummyTS.csv')
+    # else:
+    #     print("Erro in loading file")
+    ##########################################
+    #Test case for get_time_stamp_interpolated_data
+    # aDMTest = AISDataManager()
+    # dummyData,retVal = aDMTest.load_data_from_csv("Dummy.csv")
+    # if(retVal == c.errNO['SUCCESS']):
+    #     dummyData = aDMTest.get_time_stamp_interpolated_data(dummyData, 'DateTime', 'HourlyTimeStamp15To18.txt')
+    #     aDMTest.save_data_to_csv(dummyData,'DummyTSI.csv')
+    # else:
+    #     print("Erro in loading file")
+    ##########################################
+    #Test case for get_time_stamp_data_with_distance
     aDMTest = AISDataManager()
-    lAData,retVal = aDMTest.load_data_from_csv("Dummy.csv")
+    dummyData,retVal = aDMTest.load_data_from_csv("DummyTSI.csv")
     if(retVal == c.errNO['SUCCESS']):
-        lAData = aDMTest.formate_time(lAData, 'DateTime')
-        print(lAData.dtypes)
-        ###################################
-        print(lAData.shape)
-        droppedDF = aDMTest.drop_columns(lAData)
-        print(lAData.shape)
-        print(droppedDF.shape)
+        dummyData = aDMTest.get_time_stamp_data_with_distance(dummyData,'DateTime', 'HourlyTimeStamp15To18.txt')
+        aDMTest.save_data_to_csv(dummyData,'DummyTSID.csv')
     else:
         print("Erro in loading file")
