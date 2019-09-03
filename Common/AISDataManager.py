@@ -57,6 +57,11 @@ class AISDataManager():
     def save_data_to_pickle(self, dFObj, fileName):
         #FIXME put this into try except
         dFObj.to_pickle(f'{fileName}')
+    
+    def read_data_from_pickle(self,fileName):
+        #FIXME try except
+        retDF = pd.read_pickle(fileName)
+        return retDF
 
     #get unique entries of data frame
     def get_list_of_unique_enries(self, dFObj, columnName):
