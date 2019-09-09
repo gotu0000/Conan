@@ -56,3 +56,12 @@ def compute_xy_for_kde(xMin,xMax,yMin,yMax,step,precision):
         xy[i,0],xy[i,1] = compute_mid_point(boundary[i][LON_MIN_INDEX],boundary[i][LON_MAX_INDEX],\
                                 boundary[i][LAT_MIN_INDEX],boundary[i][LAT_MAX_INDEX])
     return xy
+
+def get_row_col(flatIndex, numRows, numCols):
+    if(flatIndex >= (numRows*numCols)):
+        return -1,-1
+    else:
+        row = flatIndex // numCols
+        col = flatIndex % numCols
+        print(row,col)
+        return row,col

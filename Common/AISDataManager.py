@@ -156,6 +156,11 @@ class AISDataManager():
         filteredDF = tempDF[(tempDF[timeColName] >= startTime) & (tempDF[timeColName] < endTime)]
         return filteredDF
 
+    #assumption is df is date time formatted
+    def filter_based_on_time_stamp_without_copy(self, dFObj, timeColName, startTime, endTime):
+        filteredDF = dFObj[(dFObj[timeColName] >= startTime) & (dFObj[timeColName] < endTime)].copy()
+        return filteredDF
+
     #function to get lower bound of time
     #useful for linear interpolation
     #returns a series object

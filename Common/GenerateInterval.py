@@ -75,6 +75,34 @@ def generate_interval(startDate, endDate, nameOfFile, incrBy = 1):
 		for i in range(len(dateList)-1):
 			f.write("%s,%s\n" % (dateList[i],dateList[i+1]))
 
+#unit 0 for sec
+#unit 1 for min
+def generate_sec_min_interval(startTime, endTime, nameOfFile, unit = 0, incrBy = 1):
+	#container for time stamps
+	timeList = []
+
+	#first put start time
+	timeList.append(startTime)
+
+	incrCounter = incrBy
+	nextTime = startTime
+
+	#keep on appending the date time objects created 
+	#using timedelta
+	while(nextTime != endTime):
+		#if seconds
+		if(unit == 0):
+			nextTime = startTime + datetime.timedelta(seconds=incrCounter)
+		else:
+			nextTime = startTime + datetime.timedelta(minutes=incrCounter)
+		timeList.append(nextTime)
+		incrCounter = incrCounter + incrBy
+
+	#write it into a file
+	with open(nameOfFile, 'w') as f:
+		for i in range(len(timeList)-1):
+			f.write("%s,%s\n" % (timeList[i],timeList[i+1]))
+
 
 ##
 ## @brief      Generate time stamp data
