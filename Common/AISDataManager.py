@@ -96,7 +96,7 @@ class AISDataManager():
 
     #will return same DF with extra column
     #this will change the original DF if we change the return value
-    def formate_time(self, dFObj, colName, inPlace == False):
+    def formate_time(self, dFObj, colName, inPlace = False):
         if(inPlace == False):
             retDF = dFObj.copy()
         else:
