@@ -96,9 +96,12 @@ class AISDataManager():
 
     #will return same DF with extra column
     #this will change the original DF if we change the return value
-    def formate_time(self, dFObj, colName):
+    def formate_time(self, dFObj, colName, inPlace == False):
+        if(inPlace == False):
+            retDF = dFObj.copy()
+        else:
+            retDF = dFObj
         #check for whether date time column is already there or not
-        retDF = dFObj.copy()
         if(colName in retDF.columns):
             if(retDF.loc[:, colName].dtypes == np.dtype('object')):
                 retDF.loc[:, colName] = pd.to_datetime(retDF[colName])
@@ -412,6 +415,9 @@ class AISDataManager():
                 # print(tempAngle)
         # print(retDF)
         return retDF
+
+    def inver_df(self,dFObj):
+        return dFObj.iloc[::-1]
             
 
 if __name__ == '__main__':
