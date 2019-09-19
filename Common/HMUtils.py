@@ -1,4 +1,5 @@
 import numpy as  np
+import math
 
 LON_MIN_INDEX = 0
 LON_MAX_INDEX = 1
@@ -7,11 +8,23 @@ LAT_MAX_INDEX = 3
 FLAT_INDEX_INDEX = 4
 
 def generate_grid(xMin,xMax,yMin,yMax,step,precision):
-    xGrid = np.arange(xMin,xMax,step)
+    noOfXSteps = math.floor((xMax-xMin)/step)
+    noOfYSteps = math.floor((yMax-yMin)/step)
+    
+    yGrid = np.linspace(yMin,yMax,num = (noOfYSteps-1))
+    
+    xGrid = []
+    for i in range(noOfXSteps):
+        xGrid.append(xMin + (i*step))
+    xGrid = np.array(xGrid)
     xGrid = np.around(xGrid,precision)
-    yGrid = np.arange(yMin,yMax,step)
+    
+    yGrid = []
+    for i in range(noOfYSteps):
+        yGrid.append(yMin + (i*step))
+    yGrid = np.array(yGrid)
     yGrid = np.around(yGrid,precision)
-
+    
     xYMinMax = []
     gridCounter = 0
     for i in range(0,yGrid.shape[0]):
