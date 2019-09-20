@@ -45,14 +45,10 @@ boundaryArray = heatMapGrid[2]
 horizontalAxis = heatMapGrid[0]
 verticalAxis = heatMapGrid[1]
 
-# for boundary in boundaryArray:
-#     print(boundary)    
-# print(horizontalAxis)
-# print(horizontalAxis.shape)
-# print(verticalAxis)
-# print(verticalAxis.shape)
+print(horizontalAxis.shape)
+print(verticalAxis.shape)
 
-opFile = "../Data/M120_00_M190_80_34_16_24_26/YearlyHM.npy"
+opFile = "../Data/M120_00_M190_50_34_12_34_24/YearlyHM.npy"
 
 def compute_heat_map(localDf):
 	npHeatMap = np.zeros((horizontalAxis.shape[0]*verticalAxis.shape[0]))
@@ -67,19 +63,21 @@ def compute_heat_map(localDf):
 		print("Done Computing %d"%(i))
 	np.save(opFile, npHeatMap)
 
+SOURCE_DIR = "M120_00_M190_50_34_12_34_24"
+
 fileList = [ \
-            "../Data/M120_00_M190_80_34_16_24_26/17_01_Dropped.csv" \
-            ,"../Data/M120_00_M190_80_34_16_24_26/17_02_Dropped.csv" \
-            ,"../Data/M120_00_M190_80_34_16_24_26/17_03_Dropped.csv" \
-            ,"../Data/M120_00_M190_80_34_16_24_26/17_04_Dropped.csv" \
-            ,"../Data/M120_00_M190_80_34_16_24_26/17_05_Dropped.csv" \
-            ,"../Data/M120_00_M190_80_34_16_24_26/17_06_Dropped.csv" \
-            ,"../Data/M120_00_M190_80_34_16_24_26/17_07_Dropped.csv" \
-            ,"../Data/M120_00_M190_80_34_16_24_26/17_08_Dropped.csv" \
-            ,"../Data/M120_00_M190_80_34_16_24_26/17_09_Dropped.csv" \
-            ,"../Data/M120_00_M190_80_34_16_24_26/17_10_Dropped.csv" \
-            ,"../Data/M120_00_M190_80_34_16_24_26/17_11_Dropped.csv" \
-            ,"../Data/M120_00_M190_80_34_16_24_26/17_12_Dropped.csv" \
+            "../Data/"+SOURCE_DIR+"/17_01_Dropped.csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_02_Dropped.csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_03_Dropped.csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_04_Dropped.csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_05_Dropped.csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_06_Dropped.csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_07_Dropped.csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_08_Dropped.csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_09_Dropped.csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_10_Dropped.csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_11_Dropped.csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_12_Dropped.csv" \
             ]
 
 yearlyDF = pd.DataFrame()
