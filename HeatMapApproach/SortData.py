@@ -38,24 +38,26 @@ storeInDestDir = 1
 #destination directory path
 destDir = "../Data/M120_00_M190_80_34_16_24_26/"
 #suffix to be added for the dropped data
-droppedSuffix = "_Dropped.csv"
+sortedSuffix = "_Sorted.csv"
 
 for file in fileNameList:
     #load the data csv file data
     dFObj,_ = aISDM.load_data_from_csv(file)
-    #drop unnecessary columns
-    droppedDF = aISDM.drop_columns(dFObj)
+    #sort with respect to time
+    aISDM.formate_time(dFObj,'DateTime',inPlace = True)
+
+    dFObjSorted = dFObj.sort_values(by='DateTime')
     if(storeInDestDir == 1):
         #get just the file name 
         fileName = file.split("/")[-1]
         #replace it with suffix
-        drFileName = fileName.replace(".csv",droppedSuffix)
+        drFileName = fileName.replace(".csv",sortedSuffix)
         #generate destination path
         drFileNameToStore = destDir + drFileName
     else:
         #generate destination path by replacing with suffix
-        drFileNameToStore = file.replace(".csv",droppedSuffix)
+        drFileNameToStore = file.replace(".csv",sortedSuffix)
         
     #store in destination
-    aISDM.save_data_to_csv(droppedDF,drFileNameToStore)
-    print("Done Dropping %s"%(file))
+    aISDM.save_data_to_csv(dFObjSorted,drFileNameToStore)
+    print("Done Sorting %s"%(file))
