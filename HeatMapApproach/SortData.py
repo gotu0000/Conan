@@ -17,27 +17,29 @@ import multiprocessing
 aISDM = AISDataManager()
 numCores = multiprocessing.cpu_count()
 
+SOURCE_DIR = "M120_00_M190_50_34_12_34_24"
+
 fileNameList = [\
-                "../Data/M120_00_M190_80_34_16_24_26/17_01.csv" \
-                ,"../Data/M120_00_M190_80_34_16_24_26/17_02.csv" \
-                ,"../Data/M120_00_M190_80_34_16_24_26/17_03.csv" \
-                ,"../Data/M120_00_M190_80_34_16_24_26/17_04.csv" \
-                ,"../Data/M120_00_M190_80_34_16_24_26/17_05.csv" \
-                ,"../Data/M120_00_M190_80_34_16_24_26/17_06.csv" \
-                ,"../Data/M120_00_M190_80_34_16_24_26/17_07.csv" \
-                ,"../Data/M120_00_M190_80_34_16_24_26/17_08.csv" \
-                ,"../Data/M120_00_M190_80_34_16_24_26/17_09.csv" \
-                ,"../Data/M120_00_M190_80_34_16_24_26/17_10.csv" \
-                ,"../Data/M120_00_M190_80_34_16_24_26/17_11.csv" \
-                ,"../Data/M120_00_M190_80_34_16_24_26/17_12.csv" \
+                "../Data/"+SOURCE_DIR+"/17_01_Dropped.csv" \
+                ,"../Data/"+SOURCE_DIR+"/17_02_Dropped.csv" \
+                ,"../Data/"+SOURCE_DIR+"/17_03_Dropped.csv" \
+                ,"../Data/"+SOURCE_DIR+"/17_04_Dropped.csv" \
+                ,"../Data/"+SOURCE_DIR+"/17_05_Dropped.csv" \
+                ,"../Data/"+SOURCE_DIR+"/17_06_Dropped.csv" \
+                ,"../Data/"+SOURCE_DIR+"/17_07_Dropped.csv" \
+                ,"../Data/"+SOURCE_DIR+"/17_08_Dropped.csv" \
+                ,"../Data/"+SOURCE_DIR+"/17_09_Dropped.csv" \
+                ,"../Data/"+SOURCE_DIR+"/17_10_Dropped.csv" \
+                ,"../Data/"+SOURCE_DIR+"/17_11_Dropped.csv" \
+                ,"../Data/"+SOURCE_DIR+"/17_12_Dropped.csv" \
                 ]
 
 #this flag specifies 
 #whether to store in same directory or use different directory
 storeInDestDir = 1
 #destination directory path
-destDir = "../Data/M120_00_M190_80_34_16_24_26/"
-#suffix to be added for the dropped data
+destDir = "../Data/M120_00_M190_50_34_12_34_24/"
+#suffix to be added for the sorted data
 sortedSuffix = "_Sorted.csv"
 
 for file in fileNameList:
