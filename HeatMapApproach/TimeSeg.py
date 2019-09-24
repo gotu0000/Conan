@@ -46,37 +46,37 @@ for i in range(numCores):
 #we have monthly based data sorted in time
 #also few of the columns also have been dropped
 #for faster implementation
-fileNameList = ["../Data/AIS_0117_1217_31_M120_345_M117/AIS_2017_01_LAP_DrSorted.csv"\
-                ,"../Data/AIS_0117_1217_31_M120_345_M117/AIS_2017_02_LAP_DrSorted.csv"\
-                ,"../Data/AIS_0117_1217_31_M120_345_M117/AIS_2017_03_LAP_DrSorted.csv"\
-                ,"../Data/AIS_0117_1217_31_M120_345_M117/AIS_2017_04_LAP_DrSorted.csv"\
-                ,"../Data/AIS_0117_1217_31_M120_345_M117/AIS_2017_05_LAP_DrSorted.csv"\
-                ,"../Data/AIS_0117_1217_31_M120_345_M117/AIS_2017_06_LAP_DrSorted.csv"\
-                ,"../Data/AIS_0117_1217_31_M120_345_M117/AIS_2017_07_LAP_DrSorted.csv"\
-                ,"../Data/AIS_0117_1217_31_M120_345_M117/AIS_2017_08_LAP_DrSorted.csv"\
-                ,"../Data/AIS_0117_1217_31_M120_345_M117/AIS_2017_09_LAP_DrSorted.csv"\
-                ,"../Data/AIS_0117_1217_31_M120_345_M117/AIS_2017_10_LAP_DrSorted.csv"\
-                ,"../Data/AIS_0117_1217_31_M120_345_M117/AIS_2017_11_LAP_DrSorted.csv"\
-                ,"../Data/AIS_0117_1217_31_M120_345_M117/AIS_2017_12_LAP_DrSorted.csv"\
+fileNameList = ["../Data/M120_00_M190_50_34_12_34_24/17_01_Dropped_Sorted_Cargo.csv"\
+                ,"../Data/M120_00_M190_50_34_12_34_24/17_02_Dropped_Sorted_Cargo.csv"\
+                ,"../Data/M120_00_M190_50_34_12_34_24/17_03_Dropped_Sorted_Cargo.csv"\
+                ,"../Data/M120_00_M190_50_34_12_34_24/17_04_Dropped_Sorted_Cargo.csv"\
+                ,"../Data/M120_00_M190_50_34_12_34_24/17_05_Dropped_Sorted_Cargo.csv"\
+                ,"../Data/M120_00_M190_50_34_12_34_24/17_06_Dropped_Sorted_Cargo.csv"\
+                ,"../Data/M120_00_M190_50_34_12_34_24/17_07_Dropped_Sorted_Cargo.csv"\
+                ,"../Data/M120_00_M190_50_34_12_34_24/17_08_Dropped_Sorted_Cargo.csv"\
+                ,"../Data/M120_00_M190_50_34_12_34_24/17_09_Dropped_Sorted_Cargo.csv"\
+                ,"../Data/M120_00_M190_50_34_12_34_24/17_10_Dropped_Sorted_Cargo.csv"\
+                ,"../Data/M120_00_M190_50_34_12_34_24/17_11_Dropped_Sorted_Cargo.csv"\
+                ,"../Data/M120_00_M190_50_34_12_34_24/17_12_Dropped_Sorted_Cargo.csv"\
                ]
 
-timeIntervalList = ["../Data/AIS_0117_1217_31_M120_345_M117/Output/TenMinIntvl1701To1702.txt"\
-                    ,"../Data/AIS_0117_1217_31_M120_345_M117/Output/TenMinIntvl1702To1703.txt"\
-                    ,"../Data/AIS_0117_1217_31_M120_345_M117/Output/TenMinIntvl1703To1704.txt"\
-                    ,"../Data/AIS_0117_1217_31_M120_345_M117/Output/TenMinIntvl1704To1705.txt"\
-                    ,"../Data/AIS_0117_1217_31_M120_345_M117/Output/TenMinIntvl1705To1706.txt"\
-                    ,"../Data/AIS_0117_1217_31_M120_345_M117/Output/TenMinIntvl1706To1707.txt"\
-                    ,"../Data/AIS_0117_1217_31_M120_345_M117/Output/TenMinIntvl1707To1708.txt"\
-                    ,"../Data/AIS_0117_1217_31_M120_345_M117/Output/TenMinIntvl1708To1709.txt"\
-                    ,"../Data/AIS_0117_1217_31_M120_345_M117/Output/TenMinIntvl1709To1710.txt"\
-                    ,"../Data/AIS_0117_1217_31_M120_345_M117/Output/TenMinIntvl1710To1711.txt"\
-                    ,"../Data/AIS_0117_1217_31_M120_345_M117/Output/TenMinIntvl1711To1712.txt"\
-                    ,"../Data/AIS_0117_1217_31_M120_345_M117/Output/TenMinIntvl1712To1801.txt"\
+timeIntervalList = ["../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1701To1702.txt"\
+                    ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1702To1703.txt"\
+                    ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1703To1704.txt"\
+                    ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1704To1705.txt"\
+                    ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1705To1706.txt"\
+                    ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1706To1707.txt"\
+                    ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1707To1708.txt"\
+                    ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1708To1709.txt"\
+                    ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1709To1710.txt"\
+                    ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1710To1711.txt"\
+                    ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1711To1712.txt"\
+                    ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1712To1801.txt"\
                     ]
 
 #destination directory 
 #where files will be saved
-filePathToStore = "../Data/AIS_0117_1217_31_M120_345_M117/Tenly/"
+filePathToStore = "../Data/M120_00_M190_50_34_12_34_24/HalfHourly/"
 
 def serial_time_segregation(timeIntvl, number):
     temp = timeIntvl.split(',')

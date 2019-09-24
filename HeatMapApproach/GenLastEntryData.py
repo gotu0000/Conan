@@ -32,8 +32,8 @@ numCores = 8
 print("Using %d cores"%(numCores))    
 
 #assumption is the directory contains souce files in numbered way
-sourceDir = "../Data/AIS_SB/Hourly/"
-destDir = "../Data/AIS_SB/HourlyLastEntry/"
+sourceDir = "../Data/M120_00_M190_50_34_12_34_24/HalfHourly/"
+destDir = "../Data/M120_00_M190_50_34_12_34_24/HalfHourlyLE/"
 
 
 def gen_last_entry_data(number):
@@ -51,6 +51,6 @@ def gen_last_entry_data(number):
 Parallel(n_jobs=numCores, backend = 'multiprocessing', verbose=10) \
     (delayed(gen_last_entry_data) \
     (fileNumber) \
-    for fileNumber in range(8760))
+    for fileNumber in range(17519))
 
 print("Done Generating The Data")
