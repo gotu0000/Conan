@@ -48,7 +48,7 @@ verticalAxis = heatMapGrid[1]
 print(horizontalAxis.shape)
 print(verticalAxis.shape)
 
-opFile = "../Data/M120_00_M190_50_34_12_34_24/YearlyHM.npy"
+opFile = "../Data/M121_00_M119_00_33_50_34_50/YearlyHM.npy"
 
 def compute_heat_map(localDf):
 	npHeatMap = np.zeros((horizontalAxis.shape[0]*verticalAxis.shape[0]))
@@ -63,7 +63,7 @@ def compute_heat_map(localDf):
 		print("Done Computing %d"%(i))
 	np.save(opFile, npHeatMap)
 
-SOURCE_DIR = "M120_00_M190_50_34_12_34_24"
+SOURCE_DIR = "M121_00_M119_00_33_50_34_50"
 
 fileList = [ \
             "../Data/"+SOURCE_DIR+"/17_01_Dropped.csv" \
