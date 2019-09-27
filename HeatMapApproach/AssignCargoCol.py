@@ -18,7 +18,7 @@ import multiprocessing
 aISDM = AISDataManager()
 numCores = multiprocessing.cpu_count()
 
-SOURCE_DIR = "M120_00_M190_50_34_12_34_24"
+SOURCE_DIR = "M121_00_M119_00_33_50_34_50"
 fileNameList = [\
                 "../Data/"+SOURCE_DIR+"/17_01_Dropped_Sorted.csv" \
                 ,"../Data/"+SOURCE_DIR+"/17_02_Dropped_Sorted.csv" \
@@ -38,12 +38,12 @@ fileNameList = [\
 #whether to store in same directory or use different directory
 storeInDestDir = 1
 #destination directory path
-destDir = "../Data/M120_00_M190_50_34_12_34_24/"
+destDir = "../Data/M121_00_M119_00_33_50_34_50/"
 #suffix to be added for the cargo column appended data
 cargoSuffix = "_Cargo.csv"
 
 #first read the vessel info file
-vesselInfoFName = "../Data/M120_00_M190_50_34_12_34_24/VesselTypeInfo.csv"
+vesselInfoFName = "../Data/M121_00_M119_00_33_50_34_50/VesselTypeInfo.csv"
 
 vesselInfo,_  = aISDM.load_data_from_csv(vesselInfoFName)
 
@@ -63,6 +63,8 @@ for i in range(vesselInfo.shape[0]):
     mMSIDict.update({vesselInfo.iloc[i,MMSI_COL_NUM] : vesselInfo.iloc[i,CARGO_BOOL_COL_NUM]})    
 
 # print(mMSIDict)
+def get_cargo_type(x):
+    return mMSIDict[x]
 
 #now iterate through every files
 for file in fileNameList:
@@ -71,9 +73,8 @@ for file in fileNameList:
     #assign not a cargo to every line
     dFObj['CargoBool'] = "Not Cargo"
     #assign CargoBool Column
-    for line in range(dFObj.shape[0]):
-        lineMMSI = dFObj.iloc[line,0]
-        dFObj.iloc[line,-1] = mMSIDict[lineMMSI]
+    print(dFObj.shape)
+    dFObj['CargoBool'] = dFObj['MMSI'].apply(get_cargo_type)
     dFObjCargo = dFObj[(dFObj['CargoBool'] == 'Cargo')]
     if(storeInDestDir == 1):
         #get just the file name 

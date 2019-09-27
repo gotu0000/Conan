@@ -17,7 +17,7 @@ import multiprocessing
 aISDM = AISDataManager()
 numCores = multiprocessing.cpu_count()
 
-SOURCE_DIR = "M120_00_M190_50_34_12_34_24"
+SOURCE_DIR = "M121_00_M119_00_33_50_34_50"
 
 fileNameList = [ \
             "../Data/"+SOURCE_DIR+"/17_01.csv" \
@@ -34,9 +34,9 @@ fileNameList = [ \
             ,"../Data/"+SOURCE_DIR+"/17_12.csv" \
             ]
 
-dirToStore = "../Data/M120_00_M190_50_34_12_34_24/MMSI/"
+dirToStore = "../Data/M121_00_M119_00_33_50_34_50/MMSI/"
 
-mMSIList = [line.rstrip('\n') for line in open('../Data/M120_00_M190_50_34_12_34_24/MMSIList17.txt')]
+mMSIList = [line.rstrip('\n') for line in open('../Data/M121_00_M119_00_33_50_34_50/MMSIList17.txt')]
 
 data = pd.DataFrame()
 for file in fileNameList:
@@ -58,8 +58,8 @@ def segregate_vessel_data(vesselName):
     print(fileName)
     aISDM.save_data_to_csv(sortedVD,fileName)
 
-Parallel(n_jobs=numCores, backend = 'multiprocessing', verbose=10)(delayed(segregate_vessel_data)(name) for name in mMSIList)
+# Parallel(n_jobs=numCores, backend = 'multiprocessing', verbose=10)(delayed(segregate_vessel_data)(name) for name in mMSIList)
 
 # segregate_vessel_data(mMSIList[0])
-# for name in mMSIList:
-#     segregate_vessel_data(name)
+for name in mMSIList:
+    segregate_vessel_data(name)

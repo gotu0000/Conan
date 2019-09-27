@@ -32,8 +32,8 @@ numCores = 8
 print("Using %d cores"%(numCores))    
 
 #assumption is the directory contains souce files in numbered way
-sourceDir = "../Data/M120_00_M190_50_34_12_34_24/HalfHourly/"
-destDir = "../Data/M120_00_M190_50_34_12_34_24/HalfHourlyLE/"
+sourceDir = "../Data/M121_00_M119_00_33_50_34_50/HalfHourly/"
+destDir = "../Data/M121_00_M119_00_33_50_34_50/HalfHourlyLE/"
 
 
 def gen_last_entry_data(number):
