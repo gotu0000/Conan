@@ -18,7 +18,7 @@ import multiprocessing
 aISDM = AISDataManager()
 numCores = multiprocessing.cpu_count()
 
-SOURCE_DIR = "M121_00_M119_00_33_50_34_50"
+SOURCE_DIR = "M119_50_M119_00_34_00_34_16"
 fileNameList = [\
                 "../Data/"+SOURCE_DIR+"/17_01_Dropped_Sorted.csv" \
                 ,"../Data/"+SOURCE_DIR+"/17_02_Dropped_Sorted.csv" \
@@ -38,9 +38,10 @@ fileNameList = [\
 #whether to store in same directory or use different directory
 storeInDestDir = 1
 #destination directory path
-destDir = "../Data/M121_00_M119_00_33_50_34_50/"
+destDir = "../Data/M119_50_M119_00_34_00_34_16/"
 #suffix to be added for the cargo column appended data
-cargoSuffix = "_Cargo.csv"
+# cargoSuffix = "_Cargo.csv"
+cargoSuffix = "_Tanker.csv"
 
 #first read the vessel info file
 vesselInfoFName = "../Data/M121_00_M119_00_33_50_34_50/VesselTypeInfo.csv"
@@ -75,7 +76,8 @@ for file in fileNameList:
     #assign CargoBool Column
     print(dFObj.shape)
     dFObj['CargoBool'] = dFObj['MMSI'].apply(get_cargo_type)
-    dFObjCargo = dFObj[(dFObj['CargoBool'] == 'Cargo')]
+    # dFObjCargo = dFObj[(dFObj['CargoBool'] == 'Cargo')]
+    dFObjCargo = dFObj[(dFObj['CargoBool'] == 'Tanker')]
     if(storeInDestDir == 1):
         #get just the file name 
         fileName = file.split("/")[-1]
