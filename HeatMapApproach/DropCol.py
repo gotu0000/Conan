@@ -17,7 +17,7 @@ import multiprocessing
 aISDM = AISDataManager()
 numCores = multiprocessing.cpu_count()
 
-SOURCE_DIR = "M121_00_M119_00_33_50_34_50"
+SOURCE_DIR = "M119_50_M119_00_34_00_34_16"
 fileNameList = [\
                 "../Data/"+SOURCE_DIR+"/17_01.csv" \
                 ,"../Data/"+SOURCE_DIR+"/17_02.csv" \
@@ -37,7 +37,7 @@ fileNameList = [\
 #whether to store in same directory or use different directory
 storeInDestDir = 1
 #destination directory path
-destDir = "../Data/M121_00_M119_00_33_50_34_50/"
+destDir = "../Data/M119_50_M119_00_34_00_34_16/"
 #suffix to be added for the dropped data
 droppedSuffix = "_Dropped.csv"
 
