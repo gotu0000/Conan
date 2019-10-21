@@ -8,9 +8,9 @@ LAT_MAX_INDEX = 3
 FLAT_INDEX_INDEX = 4
 
 def generate_grid(xMin,xMax,yMin,yMax,step,precision):
-    noOfXSteps = math.floor((xMax-xMin)/step)
-    noOfYSteps = math.floor((yMax-yMin)/step)
-    
+    noOfXSteps = math.floor(np.around(((xMax-xMin)/step),0))
+    noOfYSteps = math.floor(np.around(((yMax-yMin)/step),0))
+
     yGrid = np.linspace(yMin,yMax,num = (noOfYSteps-1))
     
     xGrid = []

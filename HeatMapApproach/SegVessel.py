@@ -17,26 +17,32 @@ import multiprocessing
 aISDM = AISDataManager()
 numCores = multiprocessing.cpu_count()
 
-SOURCE_DIR = "M121_00_M119_00_33_50_34_50"
+#MyConfig.INI stores all the run time constants
+config = configparser.ConfigParser()
+config.read('../MyConfig.INI')
+
+SOURCE_DIR_NAME = (config['SEG_VESSEL']['SRC_DIR_NAME'])
+dirToStore = (config['SEG_VESSEL']['DEST_DIR'])
+mMSIFile = (config['SEG_VESSEL']['MMSI_FILE'])
+
+#open list of MMSI file
+#and put it into list
+mMSIList = [line.rstrip('\n') for line in open(mMSIFile)]
 
 fileNameList = [ \
-            "../Data/"+SOURCE_DIR+"/17_01.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_02.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_03.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_04.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_05.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_06.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_07.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_08.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_09.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_10.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_11.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_12.csv" \
+            "../Data/"+SOURCE_DIR_NAME+"/17_01.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/17_02.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/17_03.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/17_04.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/17_05.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/17_06.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/17_07.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/17_08.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/17_09.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/17_10.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/17_11.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/17_12.csv" \
             ]
-
-dirToStore = "../Data/M121_00_M119_00_33_50_34_50/MMSI/"
-
-mMSIList = [line.rstrip('\n') for line in open('../Data/M121_00_M119_00_33_50_34_50/MMSIList17.txt')]
 
 data = pd.DataFrame()
 for file in fileNameList:
