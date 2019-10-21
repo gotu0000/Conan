@@ -2,6 +2,7 @@ import sys
 import os
 import numpy as np
 import pandas as pd
+import gc
 
 import configparser
 sys.path.insert(0, '../Common/')
@@ -10,6 +11,7 @@ from AISDataManager import AISDataManager
 import Constants as c
 import HMUtils as hMUtil
 import TimeUtils as timeUtils
+import SimpleUtils as sU
 
 from joblib import Parallel, delayed
 import multiprocessing
@@ -17,60 +19,71 @@ import multiprocessing
 aISDM = AISDataManager()
 numCores = multiprocessing.cpu_count()
 
-lonMin = (float)(-119.50)
-lonMax = (float)(-119.00)
+#MyConfig.INI stores all the run time constants
+config = configparser.ConfigParser()
+config.read('../MyConfig.INI')
 
-latMin = (float)(34.00)
-latMax = (float)(34.16)
+lonMin = (float)(config['REGION']['LON_MIN'])
+lonMax = (float)(config['REGION']['LON_MAX'])
+
+latMin = (float)(config['REGION']['LAT_MIN'])
+latMax = (float)(config['REGION']['LAT_MAX'])
 
 print("(lonMin , latMin) = (%f,%f)"%(lonMin,latMin))
 print("(lonMax , latMax) = (%f,%f)"%(lonMax,latMax))
 
-
 #depending on approach things will change
-approach = 0
+approach = (int)(config['REGION_SEG']['APPROACH'])
+print("approach = %d"%(approach))
 
+fileSuffix = (config['REGION_SEG']['FILE_SUFFIX'])
+print(fileSuffix)
+
+print("Starting Cropping...")
+#approach 0 takes source and destination as list of files
 if(approach == 0):
-    #take list of files and 
-    #filter the data of particular region
-    #and store it as destination file
-    DEST_DIR = "M119_50_M119_00_34_00_34_16"
+
+    DEST_DIR = sU.convert_boundary_to_string(lonMin \
+                                        , lonMax \
+                                        , latMin \
+                                        , latMax \
+                                        )
+    
+    #FIXME this list can be generated
     fileNameList = [\
-                    ("../Data/M121_00_M119_00_33_50_34_50/17_01.csv", \
-                    "../Data/"+DEST_DIR+"/17_01.csv") \
-                    ,("../Data/M121_00_M119_00_33_50_34_50/17_02.csv", \
-                    "../Data/"+DEST_DIR+"/17_02.csv") \
-                    ,("../Data/M121_00_M119_00_33_50_34_50/17_03.csv", \
-                    "../Data/"+DEST_DIR+"/17_03.csv") \
-                    ,("../Data/M121_00_M119_00_33_50_34_50/17_04.csv", \
-                    "../Data/"+DEST_DIR+"/17_04.csv") \
-                    ,("../Data/M121_00_M119_00_33_50_34_50/17_05.csv", \
-                    "../Data/"+DEST_DIR+"/17_05.csv") \
-                    ,("../Data/M121_00_M119_00_33_50_34_50/17_06.csv", \
-                    "../Data/"+DEST_DIR+"/17_06.csv") \
-                    ,("../Data/M121_00_M119_00_33_50_34_50/17_07.csv", \
-                    "../Data/"+DEST_DIR+"/17_07.csv") \
-                    ,("../Data/M121_00_M119_00_33_50_34_50/17_08.csv", \
-                    "../Data/"+DEST_DIR+"/17_08.csv") \
-                    ,("../Data/M121_00_M119_00_33_50_34_50/17_09.csv", \
-                    "../Data/"+DEST_DIR+"/17_09.csv") \
-                    ,("../Data/M121_00_M119_00_33_50_34_50/17_10.csv", \
-                    "../Data/"+DEST_DIR+"/17_10.csv") \
-                    ,("../Data/M121_00_M119_00_33_50_34_50/17_11.csv", \
-                    "../Data/"+DEST_DIR+"/17_11.csv") \
-                    ,("../Data/M121_00_M119_00_33_50_34_50/17_12.csv", \
-                    "../Data/"+DEST_DIR+"/17_12.csv") \
+                    ("../Data/M121_00_M119_00_33_50_34_50/17_01"+fileSuffix+".csv", \
+                    "../Data/"+DEST_DIR+"/17_01"+fileSuffix+".csv") \
+                    ,("../Data/M121_00_M119_00_33_50_34_50/17_02"+fileSuffix+".csv", \
+                    "../Data/"+DEST_DIR+"/17_02"+fileSuffix+".csv") \
+                    ,("../Data/M121_00_M119_00_33_50_34_50/17_03"+fileSuffix+".csv", \
+                    "../Data/"+DEST_DIR+"/17_03"+fileSuffix+".csv") \
+                    ,("../Data/M121_00_M119_00_33_50_34_50/17_04"+fileSuffix+".csv", \
+                    "../Data/"+DEST_DIR+"/17_04"+fileSuffix+".csv") \
+                    ,("../Data/M121_00_M119_00_33_50_34_50/17_05"+fileSuffix+".csv", \
+                    "../Data/"+DEST_DIR+"/17_05"+fileSuffix+".csv") \
+                    ,("../Data/M121_00_M119_00_33_50_34_50/17_06"+fileSuffix+".csv", \
+                    "../Data/"+DEST_DIR+"/17_06"+fileSuffix+".csv") \
+                    ,("../Data/M121_00_M119_00_33_50_34_50/17_07"+fileSuffix+".csv", \
+                    "../Data/"+DEST_DIR+"/17_07"+fileSuffix+".csv") \
+                    ,("../Data/M121_00_M119_00_33_50_34_50/17_08"+fileSuffix+".csv", \
+                    "../Data/"+DEST_DIR+"/17_08"+fileSuffix+".csv") \
+                    ,("../Data/M121_00_M119_00_33_50_34_50/17_09"+fileSuffix+".csv", \
+                    "../Data/"+DEST_DIR+"/17_09"+fileSuffix+".csv") \
+                    ,("../Data/M121_00_M119_00_33_50_34_50/17_10"+fileSuffix+".csv", \
+                    "../Data/"+DEST_DIR+"/17_10"+fileSuffix+".csv") \
+                    ,("../Data/M121_00_M119_00_33_50_34_50/17_11"+fileSuffix+".csv", \
+                    "../Data/"+DEST_DIR+"/17_11"+fileSuffix+".csv") \
+                    ,("../Data/M121_00_M119_00_33_50_34_50/17_12"+fileSuffix+".csv", \
+                    "../Data/"+DEST_DIR+"/17_12"+fileSuffix+".csv") \
                     ]
-                    
-    # fileNameList = [\
-    #                 ("../Data/M121_00_M119_00_33_50_34_50/MMSI/566952000_Sorted.csv", \
-    #                 "../Data/M120_50_M119_00_33_90_34_38/MMSI/566952000_Sorted.csv") \
-    #                 ]
 
     
     SRC_INDEX = 0
     DEST_INDEX = 1
 
+    #take list of files and 
+    #filter the data of particular region
+    #and store it as destination file
     for file in fileNameList:
         aISDM.save_data_for_targeted_area( \
                                         file[SRC_INDEX] \
@@ -83,44 +96,49 @@ if(approach == 0):
         print("%s generated"%(file[DEST_INDEX]))
     
 elif(approach == 1):
-    DEST_DIR = "M121_00_M119_00_33_50_34_50"
+    DEST_DIR = sU.convert_boundary_to_string(lonMin \
+                                        , lonMax \
+                                        , latMin \
+                                        , latMax \
+                                        )
+
     fileNameList = [\
-                    # ("../Data/RawData/AIS_2017_Zone_11/AIS_2017_01_Zone11.csv", \
-                    # "../Data/RawData/AIS_2017_Zone_10/AIS_2017_01_Zone10.csv", \
-                    # "../Data/"+DEST_DIR+"/17_01.csv") \
-                    # ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_02_Zone11.csv", \
-                    # "../Data/RawData/AIS_2017_Zone_10/AIS_2017_02_Zone10.csv", \
-                    # "../Data/"+DEST_DIR+"/17_02.csv") \
-                    # ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_03_Zone11.csv", \
-                    # "../Data/RawData/AIS_2017_Zone_10/AIS_2017_03_Zone10.csv", \
-                    # "../Data/"+DEST_DIR+"/17_03.csv") \
-                    # ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_04_Zone11.csv", \
-                    # "../Data/RawData/AIS_2017_Zone_10/AIS_2017_04_Zone10.csv", \
-                    # "../Data/"+DEST_DIR+"/17_04.csv") \
-                    ("../Data/RawData/AIS_2017_Zone_11/AIS_2017_05_Zone11.csv", \
+                    ("../Data/RawData/AIS_2017_Zone_11/AIS_2017_01_Zone11.csv", \
+                    "../Data/RawData/AIS_2017_Zone_10/AIS_2017_01_Zone10.csv", \
+                    "../Data/"+DEST_DIR+"/17_01"+fileSuffix+".csv") \
+                    ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_02_Zone11.csv", \
+                    "../Data/RawData/AIS_2017_Zone_10/AIS_2017_02_Zone10.csv", \
+                    "../Data/"+DEST_DIR+"/17_02"+fileSuffix+".csv") \
+                    ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_03_Zone11.csv", \
+                    "../Data/RawData/AIS_2017_Zone_10/AIS_2017_03_Zone10.csv", \
+                    "../Data/"+DEST_DIR+"/17_03"+fileSuffix+".csv") \
+                    ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_04_Zone11.csv", \
+                    "../Data/RawData/AIS_2017_Zone_10/AIS_2017_04_Zone10.csv", \
+                    "../Data/"+DEST_DIR+"/17_04"+fileSuffix+".csv") \
+                    ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_05_Zone11.csv", \
                     "../Data/RawData/AIS_2017_Zone_10/AIS_2017_05_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_05.csv") \
+                    "../Data/"+DEST_DIR+"/17_05"+fileSuffix+".csv") \
                     ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_06_Zone11.csv", \
                     "../Data/RawData/AIS_2017_Zone_10/AIS_2017_06_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_06.csv") \
+                    "../Data/"+DEST_DIR+"/17_06"+fileSuffix+".csv") \
                     ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_07_Zone11.csv", \
                     "../Data/RawData/AIS_2017_Zone_10/AIS_2017_07_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_07.csv") \
+                    "../Data/"+DEST_DIR+"/17_07"+fileSuffix+".csv") \
                     ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_08_Zone11.csv", \
                     "../Data/RawData/AIS_2017_Zone_10/AIS_2017_08_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_08.csv") \
+                    "../Data/"+DEST_DIR+"/17_08"+fileSuffix+".csv") \
                     ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_09_Zone11.csv", \
                     "../Data/RawData/AIS_2017_Zone_10/AIS_2017_09_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_09.csv") \
+                    "../Data/"+DEST_DIR+"/17_09"+fileSuffix+".csv") \
                     ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_10_Zone11.csv", \
                     "../Data/RawData/AIS_2017_Zone_10/AIS_2017_10_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_10.csv") \
+                    "../Data/"+DEST_DIR+"/17_10"+fileSuffix+".csv") \
                     ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_11_Zone11.csv", \
                     "../Data/RawData/AIS_2017_Zone_10/AIS_2017_11_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_11.csv") \
+                    "../Data/"+DEST_DIR+"/17_11"+fileSuffix+".csv") \
                     ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_12_Zone11.csv", \
                     "../Data/RawData/AIS_2017_Zone_10/AIS_2017_12_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_12.csv") \
+                    "../Data/"+DEST_DIR+"/17_12"+fileSuffix+".csv") \
                     ]
 
     SRC_1_INDEX = 0
@@ -148,12 +166,36 @@ elif(approach == 1):
         filteredDF2 = pd.DataFrame()
         combinedDF = pd.DataFrame()
 
+        gc.collect()
+
 elif(approach == 2):
+    
     srcDir = "../Data/M121_00_M119_00_33_50_34_50/HalfHourly/"
     destDir = "../Data/M120_50_M119_00_33_90_34_38/HalfHourly/"
     for file in range(17519):
         srcFile = srcDir + str(file) + '.csv'
         destFile = destDir + str(file) + '.csv'
+        aISDM.save_data_for_targeted_area( \
+                                        srcFile \
+                                        , lonMin \
+                                        , lonMax \
+                                        , latMin \
+                                        , latMax \
+                                        , destFile \
+                                        )
+        print("%s generated"%(destFile))
+
+elif(approach == 3):
+    #read list of MMSI
+    mMSIListFile = "../Data/M121_00_M119_00_33_50_34_50/MMSIList17.txt"
+    mMSIList = [line.rstrip('\n') for line in open(mMSIListFile)]
+    #and for each vessel data
+    #crop the data limited to that region
+    srcDir = "../Data/M121_00_M119_00_33_50_34_50/MMSI/"
+    destDir = "../Data/M119_50_M119_00_34_00_34_16/MMSI/"
+    for name in mMSIList:
+        srcFile = srcDir + name + '_Sorted.csv'
+        destFile = destDir + name + '_Sorted.csv'
         aISDM.save_data_for_targeted_area( \
                                         srcFile \
                                         , lonMin \
