@@ -29,10 +29,10 @@ print(mMSITypeCmpFile)
 
 mMSITypeDF,_ = aISDM.load_data_from_csv(mMSITypeFile)
 mMSITypeDF['VesselTypeSpec'] = 'Not Container'
+print(mMSITypeDF.dtypes)
 
 mMSITypeCmpDF,_ = aISDM.load_data_from_csv(mMSITypeCmpFile)
 mMSITypeCmpDF = mMSITypeCmpDF.set_index('MMSI')
-
 #index with MMSI
 #easier to access the VesseleType
 for i in range(mMSITypeDF.shape[0]):

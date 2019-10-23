@@ -31,6 +31,7 @@ allowedTypes = [1004.0, 1024.0]
 
 #load original vessel type
 mMSITypeDF,_ = aISDM.load_data_from_csv(mMSITypeFile)
+print(mMSITypeDF.dtypes)
 vesselTypeCrDF = pd.DataFrame()
 typeCounter = 0
 print(mMSITypeDF.shape)
@@ -39,8 +40,10 @@ for i in range(mMSITypeDF.shape[0]):
 	currType = mMSITypeDF.iloc[i,1]
 	currVessel = mMSITypeDF.iloc[i,0]
 	if(currType in allowedTypes):
-		vesselTypeCrDF = vesselTypeCrDF.append(mMSITypeDF.iloc[i,:], ignore_index = True)
+		# vesselTypeCrDF = vesselTypeCrDF.append(mMSITypeDF.iloc[i,:], ignore_index = True)
+		vesselTypeCrDF = vesselTypeCrDF.append({'MMSI':str(currVessel),'VesselType':currType}, ignore_index = True)
 		typeCounter = typeCounter + 1
+		print(vesselTypeCrDF.dtypes)
 
 print(vesselTypeCrDF.shape)
 aISDM.save_data_to_csv(vesselTypeCrDF, mMSITypeDestFile)
