@@ -3,6 +3,7 @@ import numpy as np
 import Constants as c
 import Interpolation as lIP
 import GeoCompute as gC
+import datetime
 
 #this class helps to handle
 #raw AIS file 
