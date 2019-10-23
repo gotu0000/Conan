@@ -46,37 +46,70 @@ for i in range(numCores):
 #we have monthly based data sorted in time
 #also few of the columns also have been dropped
 #for faster implementation
-fileNameList = ["../Data/M119_50_M119_00_34_00_34_16/17_01_Dropped_Sorted_Tanker.csv"\
-                ,"../Data/M119_50_M119_00_34_00_34_16/17_02_Dropped_Sorted_Tanker.csv"\
-                ,"../Data/M119_50_M119_00_34_00_34_16/17_03_Dropped_Sorted_Tanker.csv"\
-                ,"../Data/M119_50_M119_00_34_00_34_16/17_04_Dropped_Sorted_Tanker.csv"\
-                ,"../Data/M119_50_M119_00_34_00_34_16/17_05_Dropped_Sorted_Tanker.csv"\
-                ,"../Data/M119_50_M119_00_34_00_34_16/17_06_Dropped_Sorted_Tanker.csv"\
-                ,"../Data/M119_50_M119_00_34_00_34_16/17_07_Dropped_Sorted_Tanker.csv"\
-                ,"../Data/M119_50_M119_00_34_00_34_16/17_08_Dropped_Sorted_Tanker.csv"\
-                ,"../Data/M119_50_M119_00_34_00_34_16/17_09_Dropped_Sorted_Tanker.csv"\
-                ,"../Data/M119_50_M119_00_34_00_34_16/17_10_Dropped_Sorted_Tanker.csv"\
-                ,"../Data/M119_50_M119_00_34_00_34_16/17_11_Dropped_Sorted_Tanker.csv"\
-                ,"../Data/M119_50_M119_00_34_00_34_16/17_12_Dropped_Sorted_Tanker.csv"\
+fileNameList = ["../Data/M120_50_M119_00_33_90_34_44/17_01_Dr_Sort_Con.csv"\
+                ,"../Data/M120_50_M119_00_33_90_34_44/17_02_Dr_Sort_Con.csv"\
+                ,"../Data/M120_50_M119_00_33_90_34_44/17_03_Dr_Sort_Con.csv"\
+                ,"../Data/M120_50_M119_00_33_90_34_44/17_04_Dr_Sort_Con.csv"\
+                ,"../Data/M120_50_M119_00_33_90_34_44/17_05_Dr_Sort_Con.csv"\
+                ,"../Data/M120_50_M119_00_33_90_34_44/17_06_Dr_Sort_Con.csv"\
+                ,"../Data/M120_50_M119_00_33_90_34_44/17_07_Dr_Sort_Con.csv"\
+                ,"../Data/M120_50_M119_00_33_90_34_44/17_08_Dr_Sort_Con.csv"\
+                ,"../Data/M120_50_M119_00_33_90_34_44/17_09_Dr_Sort_Con.csv"\
+                ,"../Data/M120_50_M119_00_33_90_34_44/17_10_Dr_Sort_Con.csv"\
+                ,"../Data/M120_50_M119_00_33_90_34_44/17_11_Dr_Sort_Con.csv"\
+                ,"../Data/M120_50_M119_00_33_90_34_44/17_12_Dr_Sort_Con.csv"\
                ]
 
-timeIntervalList = ["../Data/M119_50_M119_00_34_00_34_16/TimeInterval/HalfHourIntvl1701To1702.txt"\
-                    ,"../Data/M119_50_M119_00_34_00_34_16/TimeInterval/HalfHourIntvl1702To1703.txt"\
-                    ,"../Data/M119_50_M119_00_34_00_34_16/TimeInterval/HalfHourIntvl1703To1704.txt"\
-                    ,"../Data/M119_50_M119_00_34_00_34_16/TimeInterval/HalfHourIntvl1704To1705.txt"\
-                    ,"../Data/M119_50_M119_00_34_00_34_16/TimeInterval/HalfHourIntvl1705To1706.txt"\
-                    ,"../Data/M119_50_M119_00_34_00_34_16/TimeInterval/HalfHourIntvl1706To1707.txt"\
-                    ,"../Data/M119_50_M119_00_34_00_34_16/TimeInterval/HalfHourIntvl1707To1708.txt"\
-                    ,"../Data/M119_50_M119_00_34_00_34_16/TimeInterval/HalfHourIntvl1708To1709.txt"\
-                    ,"../Data/M119_50_M119_00_34_00_34_16/TimeInterval/HalfHourIntvl1709To1710.txt"\
-                    ,"../Data/M119_50_M119_00_34_00_34_16/TimeInterval/HalfHourIntvl1710To1711.txt"\
-                    ,"../Data/M119_50_M119_00_34_00_34_16/TimeInterval/HalfHourIntvl1711To1712.txt"\
-                    ,"../Data/M119_50_M119_00_34_00_34_16/TimeInterval/HalfHourIntvl1712To1801.txt"\
+timeSuffix = '00'
+# timeSuffix = '01'
+# timeSuffix = '02'
+# timeSuffix = '03'
+# timeSuffix = '04'
+# timeSuffix = '05'
+# timeSuffix = '06'
+# timeSuffix = '07'
+# timeSuffix = '08'
+# timeSuffix = '09'
+# timeSuffix = '10'
+# timeSuffix = '11'
+# timeSuffix = '12'
+# timeSuffix = '13'
+# timeSuffix = '14'
+# timeSuffix = '15'
+# timeSuffix = '16'
+# timeSuffix = '17'
+# timeSuffix = '18'
+# timeSuffix = '19'
+# timeSuffix = '20'
+# timeSuffix = '21'
+# timeSuffix = '22'
+# timeSuffix = '23'
+# timeSuffix = '24'
+# timeSuffix = '25'
+# timeSuffix = '26'
+# timeSuffix = '27'
+# timeSuffix = '28'
+# timeSuffix = '29'
+
+timeIntervalList = ["../Data/TimeInterval/HalfHourIntvl1701To1702_"+timeSuffix+".txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1702To1703_"+timeSuffix+".txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1703To1704_"+timeSuffix+".txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1704To1705_"+timeSuffix+".txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1705To1706_"+timeSuffix+".txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1706To1707_"+timeSuffix+".txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1707To1708_"+timeSuffix+".txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1708To1709_"+timeSuffix+".txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1709To1710_"+timeSuffix+".txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1710To1711_"+timeSuffix+".txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1711To1712_"+timeSuffix+".txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1712To1801_"+timeSuffix+".txt"\
                     ]
+
 
 #destination directory 
 #where files will be saved
-filePathToStore = "../Data/M119_50_M119_00_34_00_34_16/HalfHrTanker/"
+filePathToStore = "../Data/M120_50_M119_00_33_90_34_44/Container/HalfHr"+timeSuffix+"/"
+
 
 def serial_time_segregation(timeIntvl, number):
     temp = timeIntvl.split(',')
