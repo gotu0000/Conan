@@ -60,7 +60,7 @@ fileNameList = ["../Data/M120_50_M119_00_33_90_34_44/17_01_Dr_Sort_Con.csv"\
                 ,"../Data/M120_50_M119_00_33_90_34_44/17_12_Dr_Sort_Con.csv"\
                ]
 
-timeSuffix = '00'
+# timeSuffix = '00'
 # timeSuffix = '01'
 # timeSuffix = '02'
 # timeSuffix = '03'
@@ -89,7 +89,7 @@ timeSuffix = '00'
 # timeSuffix = '26'
 # timeSuffix = '27'
 # timeSuffix = '28'
-# timeSuffix = '29'
+timeSuffix = '29'
 
 timeIntervalList = ["../Data/TimeInterval/HalfHourIntvl1701To1702_"+timeSuffix+".txt"\
                     ,"../Data/TimeInterval/HalfHourIntvl1702To1703_"+timeSuffix+".txt"\

@@ -35,11 +35,11 @@ print("Number of available cores = %d"%(numCores))
 numCores = 8
 print("Using %d cores"%(numCores))    
 
-sourceDir = "../Data/M120_00_M190_50_34_12_34_24/MMSI/"
-destDir = "../Data/M120_00_M190_50_34_12_34_24/MMSI/"
+sourceDir = "../Data/M120_00_M119_50_34_12_34_24/MMSI/"
+destDir = "../Data/M120_00_M119_50_34_12_34_24/MMSI/"
 #read the MMSI data
 
-lonMin = (float)(-120.0)
+lonMin = (float)(-120.00)
 lonMax = (float)(-119.50)
 
 latMin = (float)(34.12)
@@ -54,18 +54,18 @@ incrRes = (int)(2)
 minuteInterval = 30
 
 timeIntvlTexts = [\
-                "../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1701To1702.txt" \
-                ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1702To1703.txt" \
-                ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1703To1704.txt" \
-                ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1704To1705.txt" \
-                ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1705To1706.txt" \
-                ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1706To1707.txt" \
-                ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1707To1708.txt" \
-                ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1708To1709.txt" \
-                ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1709To1710.txt" \
-                ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1710To1711.txt" \
-                ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1711To1712.txt" \
-                ,"../Data/M120_00_M190_50_34_12_34_24/TimeInterval/HalfHourIntvl1712To1801.txt" \
+                # "../Data/M120_00_M119_50_34_12_34_24/TimeInterval/HalfHourIntvl1701To1702.txt" \
+                # ,"../Data/M120_00_M119_50_34_12_34_24/TimeInterval/HalfHourIntvl1702To1703.txt" \
+                # ,"../Data/M120_00_M119_50_34_12_34_24/TimeInterval/HalfHourIntvl1703To1704.txt" \
+                # ,"../Data/M120_00_M119_50_34_12_34_24/TimeInterval/HalfHourIntvl1704To1705.txt" \
+                # ,"../Data/M120_00_M119_50_34_12_34_24/TimeInterval/HalfHourIntvl1705To1706.txt" \
+                # ,"../Data/M120_00_M119_50_34_12_34_24/TimeInterval/HalfHourIntvl1706To1707.txt" \
+                # ,"../Data/M120_00_M119_50_34_12_34_24/TimeInterval/HalfHourIntvl1707To1708.txt" \
+                # ,"../Data/M120_00_M119_50_34_12_34_24/TimeInterval/HalfHourIntvl1708To1709.txt" \
+                # ,"../Data/M120_00_M119_50_34_12_34_24/TimeInterval/HalfHourIntvl1709To1710.txt" \
+                # ,"../Data/M120_00_M119_50_34_12_34_24/TimeInterval/HalfHourIntvl1710To1711.txt" \
+                # ,"../Data/M120_00_M119_50_34_12_34_24/TimeInterval/HalfHourIntvl1711To1712.txt" \
+                "../Data/M120_00_M119_50_34_12_34_24/TimeInterval/HalfHourIntvl1712To1801.txt" \
                 ]
 
 timeWindows = []
@@ -74,11 +74,13 @@ for intvl in timeIntvlTexts:
     for line in open(intvl):
         timeWindows.append(line.rstrip('\n'))
 
-mMSIListFile = "../Data/M120_00_M190_50_34_12_34_24/MMSIList17.txt"
+# mMSIListFile = "../Data/M121_00_M119_00_33_50_34_50/MMSIList17.txt"
+mMSIListFile = "../Data/M120_00_M119_50_34_12_34_24/MMSIList17.txt"
 
 mMSIList = [line.rstrip('\n') for line in open(mMSIListFile)]
 
-groupDestDir = "../Data/M120_00_M190_50_34_12_34_24/MMSIGroup/"
+groupDestDir = "../Data/M120_00_M119_50_34_12_34_24/MMSIGroupCargo/"
+# groupDestDir = "../Data/M120_00_M119_50_34_12_34_24/MMSIGroupTanker/"
 
 def gen_last_entry_data(vesselName):
     sourceFile = sourceDir + vesselName + '_Sorted.csv'
@@ -98,7 +100,8 @@ def gen_last_entry_data(vesselName):
         invertedTimelyDF = invertedTimelyDF.drop_duplicates(subset="MMSI")
         
         oneVesselLastData = oneVesselLastData.append(invertedTimelyDF, ignore_index = True)
-    opFile = sourceDir + vesselName + '_SortedLE.csv'
+    # opFile = sourceDir + vesselName + '_SortedLE.csv'
+    opFile = sourceDir + vesselName + '_SortedLEDec.csv'
     aISDM.save_data_to_csv(oneVesselLastData,opFile)
 
 # Uncomment the block to generate the data
@@ -202,6 +205,7 @@ fileStoreCounter = 0
 def get_sequence_data_frame(vesselName):
     global fileStoreCounter
     #read the data
+    # sourceFile = sourceDir + vesselName + '_SortedLEDec.csv'
     sourceFile = sourceDir + vesselName + '_SortedLE.csv'
     sourceDF, retVal = aISDM.load_data_from_csv(sourceFile)
     # print(sourceDF)
@@ -217,6 +221,7 @@ def get_sequence_data_frame(vesselName):
     colNum = sourceDFFT.columns.tolist().index('VesselType')
   
     if(sourceDFFT.iloc[0,colNum] != 1004.0):
+    # if(sourceDFFT.iloc[0,colNum] != 1024.0):
         return []
     #make copy of DateTime column
     #get the series of date time
@@ -280,6 +285,7 @@ def get_sequence_data_frame(vesselName):
 # print(dataList)
 # np.savez("../Data/M120_00_M190_50_34_12_34_24/SeqData.npz",*dataList)
 
+#uncomment to generate sequential data  
 for name in mMSIList:
     get_sequence_data_frame(name)
 print(fileStoreCounter)
