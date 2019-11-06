@@ -10,6 +10,7 @@ from AISDataManager import AISDataManager
 import Constants as c
 import HMUtils as hMUtil
 import TimeUtils as timeUtils
+import SimpleUtils as sU
 
 runInCOEUS = 0
 
@@ -39,6 +40,7 @@ print("Starting Yearly Heat Map Generation")
 
 increStep = (float)(config['HEATMAP']['INCR_STEP'])
 incrRes = (int)(config['HEATMAP']['INCR_RES'])
+fileSuffix = (config['HEATMAP']['FILE_SUFFIX'])
 
 heatMapGrid = hMUtil.generate_grid(lonMin, lonMax, latMin, latMax, increStep, incrRes)
 boundaryArray = heatMapGrid[2]
@@ -48,8 +50,13 @@ verticalAxis = heatMapGrid[1]
 print(horizontalAxis.shape)
 print(verticalAxis.shape)
 
-# opFile = "../Data/M121_00_M119_00_33_50_34_50/YearlyHM.npy"
-opFile = "../Data/M121_00_M119_00_33_50_34_50/YearlyHMCargo.npy"
+SOURCE_DIR = sU.convert_boundary_to_string(lonMin \
+                                        , lonMax \
+                                        , latMin \
+                                        , latMax \
+                                        )
+
+opFile = "../Data/"+SOURCE_DIR+"/YearlyHM"+fileSuffix+".npy"
 
 def compute_heat_map(localDf):
 	npHeatMap = np.zeros((horizontalAxis.shape[0]*verticalAxis.shape[0]))
@@ -64,36 +71,20 @@ def compute_heat_map(localDf):
 		print("Done Computing %d"%(i))
 	np.save(opFile, npHeatMap)
 
-SOURCE_DIR = "M121_00_M119_00_33_50_34_50"
-
-# fileList = [ \
-#             "../Data/"+SOURCE_DIR+"/17_01_Dropped.csv" \
-#             ,"../Data/"+SOURCE_DIR+"/17_02_Dropped.csv" \
-#             ,"../Data/"+SOURCE_DIR+"/17_03_Dropped.csv" \
-#             ,"../Data/"+SOURCE_DIR+"/17_04_Dropped.csv" \
-#             ,"../Data/"+SOURCE_DIR+"/17_05_Dropped.csv" \
-#             ,"../Data/"+SOURCE_DIR+"/17_06_Dropped.csv" \
-#             ,"../Data/"+SOURCE_DIR+"/17_07_Dropped.csv" \
-#             ,"../Data/"+SOURCE_DIR+"/17_08_Dropped.csv" \
-#             ,"../Data/"+SOURCE_DIR+"/17_09_Dropped.csv" \
-#             ,"../Data/"+SOURCE_DIR+"/17_10_Dropped.csv" \
-#             ,"../Data/"+SOURCE_DIR+"/17_11_Dropped.csv" \
-#             ,"../Data/"+SOURCE_DIR+"/17_12_Dropped.csv" \
-#             ]
 
 fileList = [ \
-            "../Data/"+SOURCE_DIR+"/17_01_Dropped_Sorted_Cargo.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_02_Dropped_Sorted_Cargo.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_03_Dropped_Sorted_Cargo.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_04_Dropped_Sorted_Cargo.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_05_Dropped_Sorted_Cargo.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_06_Dropped_Sorted_Cargo.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_07_Dropped_Sorted_Cargo.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_08_Dropped_Sorted_Cargo.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_09_Dropped_Sorted_Cargo.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_10_Dropped_Sorted_Cargo.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_11_Dropped_Sorted_Cargo.csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_12_Dropped_Sorted_Cargo.csv" \
+            "../Data/"+SOURCE_DIR+"/17_01"+fileSuffix+".csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_02"+fileSuffix+".csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_03"+fileSuffix+".csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_04"+fileSuffix+".csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_05"+fileSuffix+".csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_06"+fileSuffix+".csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_07"+fileSuffix+".csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_08"+fileSuffix+".csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_09"+fileSuffix+".csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_10"+fileSuffix+".csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_11"+fileSuffix+".csv" \
+            ,"../Data/"+SOURCE_DIR+"/17_12"+fileSuffix+".csv" \
             ]
 
 yearlyDF = pd.DataFrame()
