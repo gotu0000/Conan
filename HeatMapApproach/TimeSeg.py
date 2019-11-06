@@ -46,50 +46,26 @@ for i in range(numCores):
 #we have monthly based data sorted in time
 #also few of the columns also have been dropped
 #for faster implementation
-fileNameList = ["../Data/M120_50_M119_00_33_90_34_44/17_01_Dr_Sort_Con.csv"\
-                ,"../Data/M120_50_M119_00_33_90_34_44/17_02_Dr_Sort_Con.csv"\
-                ,"../Data/M120_50_M119_00_33_90_34_44/17_03_Dr_Sort_Con.csv"\
-                ,"../Data/M120_50_M119_00_33_90_34_44/17_04_Dr_Sort_Con.csv"\
-                ,"../Data/M120_50_M119_00_33_90_34_44/17_05_Dr_Sort_Con.csv"\
-                ,"../Data/M120_50_M119_00_33_90_34_44/17_06_Dr_Sort_Con.csv"\
-                ,"../Data/M120_50_M119_00_33_90_34_44/17_07_Dr_Sort_Con.csv"\
-                ,"../Data/M120_50_M119_00_33_90_34_44/17_08_Dr_Sort_Con.csv"\
-                ,"../Data/M120_50_M119_00_33_90_34_44/17_09_Dr_Sort_Con.csv"\
-                ,"../Data/M120_50_M119_00_33_90_34_44/17_10_Dr_Sort_Con.csv"\
-                ,"../Data/M120_50_M119_00_33_90_34_44/17_11_Dr_Sort_Con.csv"\
-                ,"../Data/M120_50_M119_00_33_90_34_44/17_12_Dr_Sort_Con.csv"\
+
+FILE_SUFFIX = (config['TIME_SEG']['FILE_SUFFIX'])
+SOURCE_DIR_NAME = (config['TIME_SEG']['SOURCE_DIR_NAME'])
+DEST_DIR = (config['TIME_SEG']['DEST_DIR'])
+
+fileNameList = ["../Data/"+SOURCE_DIR_NAME+"/17_01_Dr_Sort_"+FILE_SUFFIX+".csv"\
+                ,"../Data/"+SOURCE_DIR_NAME+"/17_02_Dr_Sort_"+FILE_SUFFIX+".csv"\
+                ,"../Data/"+SOURCE_DIR_NAME+"/17_03_Dr_Sort_"+FILE_SUFFIX+".csv"\
+                ,"../Data/"+SOURCE_DIR_NAME+"/17_04_Dr_Sort_"+FILE_SUFFIX+".csv"\
+                ,"../Data/"+SOURCE_DIR_NAME+"/17_05_Dr_Sort_"+FILE_SUFFIX+".csv"\
+                ,"../Data/"+SOURCE_DIR_NAME+"/17_06_Dr_Sort_"+FILE_SUFFIX+".csv"\
+                ,"../Data/"+SOURCE_DIR_NAME+"/17_07_Dr_Sort_"+FILE_SUFFIX+".csv"\
+                ,"../Data/"+SOURCE_DIR_NAME+"/17_08_Dr_Sort_"+FILE_SUFFIX+".csv"\
+                ,"../Data/"+SOURCE_DIR_NAME+"/17_09_Dr_Sort_"+FILE_SUFFIX+".csv"\
+                ,"../Data/"+SOURCE_DIR_NAME+"/17_10_Dr_Sort_"+FILE_SUFFIX+".csv"\
+                ,"../Data/"+SOURCE_DIR_NAME+"/17_11_Dr_Sort_"+FILE_SUFFIX+".csv"\
+                ,"../Data/"+SOURCE_DIR_NAME+"/17_12_Dr_Sort_"+FILE_SUFFIX+".csv"\
                ]
 
-# timeSuffix = '00'
-# timeSuffix = '01'
-# timeSuffix = '02'
-# timeSuffix = '03'
-# timeSuffix = '04'
-# timeSuffix = '05'
-# timeSuffix = '06'
-# timeSuffix = '07'
-# timeSuffix = '08'
-# timeSuffix = '09'
-# timeSuffix = '10'
-# timeSuffix = '11'
-# timeSuffix = '12'
-# timeSuffix = '13'
-# timeSuffix = '14'
-# timeSuffix = '15'
-# timeSuffix = '16'
-# timeSuffix = '17'
-# timeSuffix = '18'
-# timeSuffix = '19'
-# timeSuffix = '20'
-# timeSuffix = '21'
-# timeSuffix = '22'
-# timeSuffix = '23'
-# timeSuffix = '24'
-# timeSuffix = '25'
-# timeSuffix = '26'
-# timeSuffix = '27'
-# timeSuffix = '28'
-timeSuffix = '29'
+timeSuffix = (config['TIME_SEG']['TIME_SUFFIX'])
 
 timeIntervalList = ["../Data/TimeInterval/HalfHourIntvl1701To1702_"+timeSuffix+".txt"\
                     ,"../Data/TimeInterval/HalfHourIntvl1702To1703_"+timeSuffix+".txt"\
@@ -108,8 +84,7 @@ timeIntervalList = ["../Data/TimeInterval/HalfHourIntvl1701To1702_"+timeSuffix+"
 
 #destination directory 
 #where files will be saved
-filePathToStore = "../Data/M120_50_M119_00_33_90_34_44/Container/HalfHr"+timeSuffix+"/"
-
+filePathToStore = DEST_DIR+"/HalfHr"+timeSuffix+"/"
 
 def serial_time_segregation(timeIntvl, number):
     temp = timeIntvl.split(',')
