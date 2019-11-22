@@ -28,20 +28,16 @@ destDir = (config['SORT_DATA']['DEST_DIR'])
 #suffix to be added for the sorted data
 sortedSuffix = (config['SORT_DATA']['DEST_FILE_SUFFIX'])
 
-fileNameList = [\
-                "../Data/"+SOURCE_DIR+"/17_01"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_02"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_03"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_04"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_05"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_06"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_07"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_08"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_09"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_10"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_11"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_12"+SRC_FILE_SUFFIX+".csv" \
-                ]
+
+#years for which we want to crop the data 2015,1016,1017
+#based on that we can have more data
+yearsToConsider = [int(year) for year in (config['SORT_DATA']['YEARS_TO_CONSIDER'].split(','))]
+
+fileNameList = []
+for year in yearsToConsider:
+    for monthNum in range(1,13):
+        fileName = "../Data/"+SOURCE_DIR+"/"+"%02d"%(year)+"_"+"%02d"%(monthNum)+SRC_FILE_SUFFIX+".csv"
+        fileNameList.append(fileName)
 
 #this flag specifies 
 #whether to store in same directory or use different directory

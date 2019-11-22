@@ -23,24 +23,17 @@ numCores = multiprocessing.cpu_count()
 config = configparser.ConfigParser()
 config.read('../MyConfig.INI')
 
-SOURCE_DIR_NAME = (config['GEN_COL_LIST']['SRC_DIR_NAME'])
-fileSuffix = (config['GEN_COL_LIST']['FILE_SUFFIX'])
-destFileName = (config['GEN_COL_LIST']['DEST_FILE_NAME'])
+SOURCE_DIR_NAME = (config['GEN_VESSEL_LIST_TXT']['SRC_DIR_NAME'])
+fileSuffix = (config['GEN_VESSEL_LIST_TXT']['FILE_SUFFIX'])
+destFileName = (config['GEN_VESSEL_LIST_TXT']['DEST_FILE_NAME'])
 
-fileNameList = [\
-                    "../Data/"+SOURCE_DIR_NAME+"/17_01"+fileSuffix+".csv"
-                    ,"../Data/"+SOURCE_DIR_NAME+"/17_02"+fileSuffix+".csv"
-                    ,"../Data/"+SOURCE_DIR_NAME+"/17_03"+fileSuffix+".csv"
-                    ,"../Data/"+SOURCE_DIR_NAME+"/17_04"+fileSuffix+".csv"
-                    ,"../Data/"+SOURCE_DIR_NAME+"/17_05"+fileSuffix+".csv"
-                    ,"../Data/"+SOURCE_DIR_NAME+"/17_06"+fileSuffix+".csv"
-                    ,"../Data/"+SOURCE_DIR_NAME+"/17_07"+fileSuffix+".csv"
-                    ,"../Data/"+SOURCE_DIR_NAME+"/17_08"+fileSuffix+".csv"
-                    ,"../Data/"+SOURCE_DIR_NAME+"/17_09"+fileSuffix+".csv"
-                    ,"../Data/"+SOURCE_DIR_NAME+"/17_10"+fileSuffix+".csv"
-                    ,"../Data/"+SOURCE_DIR_NAME+"/17_11"+fileSuffix+".csv"
-                    ,"../Data/"+SOURCE_DIR_NAME+"/17_12"+fileSuffix+".csv"
-                    ]
+yearsToConsider = [int(year) for year in (config['GEN_VESSEL_LIST_TXT']['YEARS_TO_CONSIDER'].split(','))]
+
+fileNameList = []
+for year in yearsToConsider:
+    for monthNum in range(1,13):
+        fileName = "../Data/"+SOURCE_DIR_NAME+"/"+"%02d"%(year)+"_"+"%02d"%(monthNum)+fileSuffix+".csv"
+        fileNameList.append(fileName)
 
 #generate list of unique entries for entire regeion
 vesselListSets = []

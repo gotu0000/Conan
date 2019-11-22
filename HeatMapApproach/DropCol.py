@@ -38,34 +38,6 @@ for year in yearsToConsider:
         fileName = "../Data/"+SOURCE_DIR+"/"+"%02d"%(year)+"_"+"%02d"%(monthNum)+SRC_FILE_SUFFIX+".csv"
         fileNameList.append(fileName)
 
-fileNameList = [\
-                "../Data/"+SOURCE_DIR+"/16_01"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/16_02"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/16_03"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/16_04"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/16_05"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/16_06"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/16_07"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/16_08"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/16_09"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/16_10"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/16_11"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/16_12"+SRC_FILE_SUFFIX+".csv" \
-
-                ,"../Data/"+SOURCE_DIR+"/17_01"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_02"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_03"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_04"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_05"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_06"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_07"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_08"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_09"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_10"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_11"+SRC_FILE_SUFFIX+".csv" \
-                ,"../Data/"+SOURCE_DIR+"/17_12"+SRC_FILE_SUFFIX+".csv" \
-                ]
-
 #this flag specifies 
 #whether to store in same directory or use different directory
 storeInDestDir = 1
