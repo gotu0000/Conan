@@ -33,11 +33,16 @@ print("(lonMin , latMin) = (%f,%f)"%(lonMin,latMin))
 print("(lonMax , latMax) = (%f,%f)"%(lonMax,latMax))
 
 #depending on approach things will change
+#1 for cropping from the raw data of AIS
 approach = (int)(config['REGION_SEG']['APPROACH'])
 print("approach = %d"%(approach))
 
 fileSuffix = (config['REGION_SEG']['FILE_SUFFIX'])
 print(fileSuffix)
+
+#years for which we want to crop the data 2015,1016,1017
+#based on that we can have more data
+yearsToConsider = [int(year) for year in (config['REGION_SEG']['YEARS_TO_CONSIDER'].split(','))]
 
 print("Starting Cropping...")
 #approach 0 takes source and destination as list of files
@@ -102,44 +107,15 @@ elif(approach == 1):
                                         , latMax \
                                         )
 
-    fileNameList = [\
-                    ("../Data/RawData/AIS_2017_Zone_11/AIS_2017_01_Zone11.csv", \
-                    "../Data/RawData/AIS_2017_Zone_10/AIS_2017_01_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_01"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_02_Zone11.csv", \
-                    "../Data/RawData/AIS_2017_Zone_10/AIS_2017_02_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_02"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_03_Zone11.csv", \
-                    "../Data/RawData/AIS_2017_Zone_10/AIS_2017_03_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_03"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_04_Zone11.csv", \
-                    "../Data/RawData/AIS_2017_Zone_10/AIS_2017_04_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_04"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_05_Zone11.csv", \
-                    "../Data/RawData/AIS_2017_Zone_10/AIS_2017_05_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_05"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_06_Zone11.csv", \
-                    "../Data/RawData/AIS_2017_Zone_10/AIS_2017_06_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_06"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_07_Zone11.csv", \
-                    "../Data/RawData/AIS_2017_Zone_10/AIS_2017_07_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_07"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_08_Zone11.csv", \
-                    "../Data/RawData/AIS_2017_Zone_10/AIS_2017_08_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_08"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_09_Zone11.csv", \
-                    "../Data/RawData/AIS_2017_Zone_10/AIS_2017_09_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_09"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_10_Zone11.csv", \
-                    "../Data/RawData/AIS_2017_Zone_10/AIS_2017_10_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_10"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_11_Zone11.csv", \
-                    "../Data/RawData/AIS_2017_Zone_10/AIS_2017_11_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_11"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_11/AIS_2017_12_Zone11.csv", \
-                    "../Data/RawData/AIS_2017_Zone_10/AIS_2017_12_Zone10.csv", \
-                    "../Data/"+DEST_DIR+"/17_12"+fileSuffix+".csv") \
-                    ]
+    #generate list of files from the approach
+    fileNameList = []
+    for year in yearsToConsider:
+        for monthNum in range(1,13):
+            fileNames = ("../Data/RawData/AIS_20"+"%02d"%(year)+"_Zone_11/AIS_20"+"%02d"%(year)+"_"+"%02d"%(monthNum)+"_Zone11.csv", \
+                    "../Data/RawData/AIS_20"+"%02d"%(year)+"_Zone_10/AIS_20"+"%02d"%(year)+"_"+"%02d"%(monthNum)+"_Zone10.csv", \
+                    "../Data/"+DEST_DIR+"/"+"%02d"%(year)+"_"+"%02d"%(monthNum)+fileSuffix+".csv")
+            
+            fileNameList.append(fileNames)
 
     SRC_1_INDEX = 0
     SRC_2_INDEX = 1
