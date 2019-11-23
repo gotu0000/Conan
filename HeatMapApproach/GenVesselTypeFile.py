@@ -24,6 +24,7 @@ config.read('../MyConfig.INI')
 srcDir = (config['GEN_VESSEL_TYPE']['SOURCE_DIR'])
 mMSIFile = (config['GEN_VESSEL_TYPE']['MMSI_FILE'])
 destFile = (config['GEN_VESSEL_TYPE']['DEST_FILE'])
+typeListDestFile = (config['GEN_VESSEL_TYPE']['TYPE_LIST_DEST_FILE'])
 
 #open list of MMSI file
 #and put it into list
@@ -47,6 +48,16 @@ for vesselName in mMSIList:
 									,'VesselType':vesselType}
 									, ignore_index= True)
 
+
+#sort according to type
+vesselTypeDF = vesselTypeDF.sort_values(by='VesselType')
+sortedType = aISDM.get_list_of_unique_enries(vesselTypeDF,'VesselType')
+
+
+#save to file 
+with open(typeListDestFile, 'w') as f:
+    for item in sortedType:
+        f.write("%s\n" % item)
 
 #save the information
 #further can be edited manuall

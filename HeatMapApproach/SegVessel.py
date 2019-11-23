@@ -30,7 +30,20 @@ mMSIFile = (config['SEG_VESSEL']['MMSI_FILE'])
 mMSIList = [line.rstrip('\n') for line in open(mMSIFile)]
 
 fileNameList = [ \
-            "../Data/"+SOURCE_DIR_NAME+"/17_01.csv" \
+            "../Data/"+SOURCE_DIR_NAME+"/16_01.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/16_02.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/16_03.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/16_04.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/16_05.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/16_06.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/16_07.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/16_08.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/16_09.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/16_10.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/16_11.csv" \
+            ,"../Data/"+SOURCE_DIR_NAME+"/16_12.csv" \
+            
+            ,"../Data/"+SOURCE_DIR_NAME+"/17_01.csv" \
             ,"../Data/"+SOURCE_DIR_NAME+"/17_02.csv" \
             ,"../Data/"+SOURCE_DIR_NAME+"/17_03.csv" \
             ,"../Data/"+SOURCE_DIR_NAME+"/17_04.csv" \
