@@ -27,11 +27,11 @@ import multiprocessing
 aISDM = AISDataManager()
 numCores = multiprocessing.cpu_count()
 
-lonMin = (float)(config['REGION']['LON_MIN'])
-lonMax = (float)(config['REGION']['LON_MAX'])
+lonMin = (float)(config['HEATMAP']['LON_MIN'])
+lonMax = (float)(config['HEATMAP']['LON_MAX'])
 
-latMin = (float)(config['REGION']['LAT_MIN'])
-latMax = (float)(config['REGION']['LAT_MAX'])
+latMin = (float)(config['HEATMAP']['LAT_MIN'])
+latMax = (float)(config['HEATMAP']['LAT_MAX'])
 
 print("(lonMin , latMin) = (%f,%f)"%(lonMin,latMin))
 print("(lonMax , latMax) = (%f,%f)"%(lonMax,latMax))
@@ -41,6 +41,10 @@ print("Starting Yearly Heat Map Generation")
 increStep = (float)(config['HEATMAP']['INCR_STEP'])
 incrRes = (int)(config['HEATMAP']['INCR_RES'])
 fileSuffix = (config['HEATMAP']['FILE_SUFFIX'])
+opFile = (config['HEATMAP']['OUTPUT_FILE'])
+
+yearsToConsider = [int(year) for year in (config['HEATMAP']['YEARS_TO_CONSIDER'].split(','))]
+
 
 heatMapGrid = hMUtil.generate_grid(lonMin, lonMax, latMin, latMax, increStep, incrRes)
 boundaryArray = heatMapGrid[2]
@@ -56,7 +60,12 @@ SOURCE_DIR = sU.convert_boundary_to_string(lonMin \
                                         , latMax \
                                         )
 
-opFile = "../Data/"+SOURCE_DIR+"/YearlyHM"+fileSuffix+".npy"
+fileNameList = []
+for year in yearsToConsider:
+    for monthNum in range(1,13):
+        fileName = "../Data/"+SOURCE_DIR+"/"+"%02d"%(year)+"_"+"%02d"%(monthNum)+fileSuffix+".csv"
+        fileNameList.append(fileName)
+
 
 def compute_heat_map(localDf):
 	npHeatMap = np.zeros((horizontalAxis.shape[0]*verticalAxis.shape[0]))
@@ -71,25 +80,9 @@ def compute_heat_map(localDf):
 		print("Done Computing %d"%(i))
 	np.save(opFile, npHeatMap)
 
-
-fileList = [ \
-            "../Data/"+SOURCE_DIR+"/17_01"+fileSuffix+".csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_02"+fileSuffix+".csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_03"+fileSuffix+".csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_04"+fileSuffix+".csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_05"+fileSuffix+".csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_06"+fileSuffix+".csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_07"+fileSuffix+".csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_08"+fileSuffix+".csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_09"+fileSuffix+".csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_10"+fileSuffix+".csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_11"+fileSuffix+".csv" \
-            ,"../Data/"+SOURCE_DIR+"/17_12"+fileSuffix+".csv" \
-            ]
-
 yearlyDF = pd.DataFrame()
 
-for file in fileList:
+for file in fileNameList:
     tempData,_ = aISDM.load_data_from_csv(file)
     yearlyDF = yearlyDF.append(tempData, ignore_index = True)
 
