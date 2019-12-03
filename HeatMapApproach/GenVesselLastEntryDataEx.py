@@ -43,56 +43,61 @@ mMSIListFile = (config['GEN_VESSEL_LAST_ENTRY_DATA']['MMSI_LIST'])
 print(sourceDir)
 print(destDir)
 minuteInterval = 30
+TIME_INTERVAL_DIFF = 1800
 
 #time interval data 
 #useful for indexing
-timeIntvlText = "../Data/TimeInterval/HalfHourIntvl1701To1801_00.txt"
+#based on those indexes 30 different files will be made
+timeIntvlText = "../Data/TimeInterval/HalfHourIntvl1601To1801_00.txt"
 timeWindow = [line.rstrip('\n') for line in open(timeIntvlText)]
-
 #1 minute slots to augment the data
 timeIntvlTextList = [\
-                    "../Data/TimeInterval/HalfHourIntvl1701To1801_00.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_01.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_02.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_03.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_04.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_05.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_06.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_07.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_08.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_09.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_10.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_11.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_12.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_13.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_14.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_15.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_16.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_17.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_18.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_19.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_20.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_21.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_22.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_23.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_24.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_25.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_26.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_27.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_28.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1701To1801_29.txt"\
+                    "../Data/TimeInterval/HalfHourIntvl1601To1801_00.txt"\
+                    # ,"../Data/TimeInterval/HalfHourIntvl1601To1801_01.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_02.txt"\
+                    # ,"../Data/TimeInterval/HalfHourIntvl1601To1801_03.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_04.txt"\
+                    # ,"../Data/TimeInterval/HalfHourIntvl1601To1801_05.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_06.txt"\
+                    # ,"../Data/TimeInterval/HalfHourIntvl1601To1801_07.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_08.txt"\
+                    # ,"../Data/TimeInterval/HalfHourIntvl1601To1801_09.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_10.txt"\
+                    # ,"../Data/TimeInterval/HalfHourIntvl1601To1801_11.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_12.txt"\
+                    # ,"../Data/TimeInterval/HalfHourIntvl1601To1801_13.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_14.txt"\
+                    # ,"../Data/TimeInterval/HalfHourIntvl1601To1801_15.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_16.txt"\
+                    # ,"../Data/TimeInterval/HalfHourIntvl1601To1801_17.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_18.txt"\
+                    # ,"../Data/TimeInterval/HalfHourIntvl1601To1801_19.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_20.txt"\
+                    # ,"../Data/TimeInterval/HalfHourIntvl1601To1801_21.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_22.txt"\
+                    # ,"../Data/TimeInterval/HalfHourIntvl1601To1801_23.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_24.txt"\
+                    # ,"../Data/TimeInterval/HalfHourIntvl1601To1801_25.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_26.txt"\
+                    # ,"../Data/TimeInterval/HalfHourIntvl1601To1801_27.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_28.txt"\
+                    # ,"../Data/TimeInterval/HalfHourIntvl1601To1801_29.txt"\
                     ]
 
+#list of time interval lists
 timeWindowList = []
 for file in timeIntvlTextList:
     timeWindowList.append([line.rstrip('\n') for line in open(file)])
-
 mMSIList = [line.rstrip('\n') for line in open(mMSIListFile)]
 fileStoreCounter = 0
+
 
 def convert_to_seconds(timeDel):
     return datetime.timedelta.total_seconds(timeDel)
 
+#get time stamp where minutes are multiple of 30
+#and seconds are 0
+#returns interval 
 def get_lower_time(timeStamp):
     timeStampStr = str(timeStamp)
     # print(timeStampStr)
@@ -117,10 +122,18 @@ def get_lower_time(timeStamp):
 
 def gen_last_entry_data(vesselName,start,end):
     global fileStoreCounter
+    #load the sorted data of vessel
     sourceFile = sourceDir + vesselName + '_Sorted.csv'
     sourceDF, retVal = aISDM.load_data_from_csv(sourceFile)
 
+    sourceDF = sourceDF[sourceDF['SOG'] > 2.0]
+
+    #now for every list in timewindow list
+    #30 in this case
+    #we will make 30 data frames of vessel trajectories
+    #separated by interval of 1 minute
     for tWin in timeWindowList:
+        #initialise empty data frame
         oneVesselLastData = pd.DataFrame()
         #based on time stamps 
         for timeWinIdx in range(start,end):
@@ -136,21 +149,40 @@ def gen_last_entry_data(vesselName,start,end):
             invertedTimelyDF = invertedTimelyDF.drop_duplicates(subset="MMSI")
             
             oneVesselLastData = oneVesselLastData.append(invertedTimelyDF, ignore_index = True)
-        # opFile = sourceDir + vesselName + '_SortedLE.csv'
-        opFile = destDir + str(fileStoreCounter) + '.csv'
-        fileStoreCounter = fileStoreCounter + 1
-        aISDM.save_data_to_csv(oneVesselLastData,opFile)
+
+        if(oneVesselLastData.shape[0] > 2):
+            opFile = destDir + str(fileStoreCounter) + '.csv'
+            fileStoreCounter = fileStoreCounter + 1
+            #get the index of DateTime column
+            timeIDX = oneVesselLastData.columns.get_loc("DateTime")
+            #get second last and last entry
+            secLastTS = oneVesselLastData.iloc[-2,timeIDX]
+            lastTS = oneVesselLastData.iloc[-1,timeIDX]
+            #check for difference 
+            lastTimeDiff = convert_to_seconds(lastTS - secLastTS)
+            if(lastTimeDiff < 1740):
+                aISDM.save_data_to_csv(oneVesselLastData.iloc[0:-1,:],opFile)
+            else:
+                aISDM.save_data_to_csv(oneVesselLastData,opFile)
 
 def get_sequence_data_frame(vesselName):
-    #read the data
+    #read the data sorted data
     sourceFile = sourceDir + vesselName + '_Sorted.csv'
     sourceDF, retVal = aISDM.load_data_from_csv(sourceFile)
     # print(sourceDF)
     # print(sourceDF.dtypes)
     #formate the date time
     sourceDFFT = aISDM.formate_time(sourceDF,'DateTime')
-    # print(sourceDFFT)
+
+
+    #get rid of all the trajectories 
+    #where it is not moving at all
+    sourceDFFT = sourceDFFT[sourceDFFT['SOG'] > 2.0]
+
+    aISDM.save_data_to_csv(sourceDFFT,"dummy.csv")
     # print(sourceDFFT.dtypes)
+    #if vessel does not have many data points
+    #go back
     if(sourceDFFT.shape[0] < 2):
         return []
         
@@ -177,7 +209,7 @@ def get_sequence_data_frame(vesselName):
     sourceDFFT['TimeDiff'] = (sourceDFFT['DateTimeNext'] - sourceDFFT['DateTime']).apply(convert_to_seconds)
     # print(sourceDFFT)
     # print(sourceDFFT.dtypes)
-    slicIdx = sourceDFFT[(sourceDFFT['TimeDiff'] > 3600)].index.tolist()
+    slicIdx = sourceDFFT[(sourceDFFT['TimeDiff'] > TIME_INTERVAL_DIFF)].index.tolist()
     print(slicIdx)
     if(len(slicIdx) > 0):
         firstIndex = 0
@@ -185,6 +217,7 @@ def get_sequence_data_frame(vesselName):
             # print(firstIndex, slicIdx[i]+1)
             ret = sourceDFFT.iloc[firstIndex:slicIdx[i]+1,:].copy()
             print(ret.shape)
+            
             timeIDX = ret.columns.get_loc("DateTime")
             lowerTimeWin = get_lower_time(ret.iloc[0,timeIDX])
             upperTimeWin = get_lower_time(ret.iloc[-1,timeIDX])
@@ -222,8 +255,6 @@ def get_sequence_data_frame(vesselName):
 
         gen_last_entry_data(vesselName,lowerTimeWinIdx,upperTimeWinIdx)
 
-# get_sequence_data_frame('209251000')
 for name in mMSIList:
     get_sequence_data_frame(name)
-
 print(fileStoreCounter)

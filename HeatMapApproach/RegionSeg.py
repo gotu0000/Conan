@@ -126,11 +126,13 @@ elif(approach == 1):
         print(src1.shape)
         print(filteredDF1.shape)
         src1 = pd.DataFrame()
+        gc.collect()
         src2, _ = aISDM.load_data_from_csv(file[SRC_2_INDEX])
         filteredDF2 = aISDM.filter_based_on_lon_lat(src2,lonMin, lonMax, latMin, latMax)
         print(src2.shape)
         print(filteredDF2.shape)
         src2 = pd.DataFrame()
+        gc.collect()
         combinedDF = filteredDF1.append(filteredDF2, ignore_index = True)
         print(combinedDF.shape)
         #filter for the desired region
