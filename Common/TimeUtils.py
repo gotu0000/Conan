@@ -12,6 +12,21 @@ monthNames = {0:'January'\
             ,11:'December'\
             }
 
+
+month = {'Jan':1
+        ,'Feb':2
+        ,'March':3
+        ,'April':4
+        ,'May':5
+        ,'June':6
+        ,'July':7
+        ,'Aug':8
+        ,'Sept':9
+        ,'Oct':10
+        ,'Nov':11
+        ,'Dec':12
+        }
+
 def get_month_from_count(hourCount):
     janHour = (31*24)-1
     febHour = janHour+(28*24)
