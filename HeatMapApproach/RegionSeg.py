@@ -183,3 +183,64 @@ elif(approach == 3):
                                         , destFile \
                                         )
         print("%s generated"%(destFile))
+elif(approach == 4):
+    DEST_DIR = sU.convert_boundary_to_string(lonMin \
+                                        , lonMax \
+                                        , latMin \
+                                        , latMax \
+                                        )
+    
+    #FIXME this list can be generated
+    fileNameList = [\
+                    ("../Data/RawData/AIS_2017_Zone_15/AIS_2017_01_Zone15.csv", \
+                    "../Data/"+DEST_DIR+"/17_01"+fileSuffix+".csv") \
+                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_02_Zone15.csv", \
+                    "../Data/"+DEST_DIR+"/17_02"+fileSuffix+".csv") \
+                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_03_Zone15.csv", \
+                    "../Data/"+DEST_DIR+"/17_03"+fileSuffix+".csv") \
+                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_04_Zone15.csv", \
+                    "../Data/"+DEST_DIR+"/17_04"+fileSuffix+".csv") \
+                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_05_Zone15.csv", \
+                    "../Data/"+DEST_DIR+"/17_05"+fileSuffix+".csv") \
+                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_06_Zone15.csv", \
+                    "../Data/"+DEST_DIR+"/17_06"+fileSuffix+".csv") \
+                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_07_Zone15.csv", \
+                    "../Data/"+DEST_DIR+"/17_07"+fileSuffix+".csv") \
+                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_08_Zone15.csv", \
+                    "../Data/"+DEST_DIR+"/17_08"+fileSuffix+".csv") \
+                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_09_Zone15.csv", \
+                    "../Data/"+DEST_DIR+"/17_09"+fileSuffix+".csv") \
+                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_10_Zone15.csv", \
+                    "../Data/"+DEST_DIR+"/17_10"+fileSuffix+".csv") \
+                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_11_Zone15.csv", \
+                    "../Data/"+DEST_DIR+"/17_11"+fileSuffix+".csv") \
+                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_12_Zone15.csv", \
+                    "../Data/"+DEST_DIR+"/17_12"+fileSuffix+".csv") \
+                    ]
+
+    
+    SRC_INDEX = 0
+    DEST_INDEX = 1
+
+    #take list of files and 
+    #filter the data of particular region
+    #and store it as destination file
+    for file in fileNameList:
+        # aISDM.save_data_for_targeted_area( \
+        #                                 file[SRC_INDEX] \
+        #                                 , lonMin \
+        #                                 , lonMax \
+        #                                 , latMin \
+        #                                 , latMax \
+        #                                 , file[DEST_INDEX] \
+        #                                 )
+        #initalise empty cropped DF
+        croppedDF = pd.DataFrame()
+        #read csv in chunk and 
+        #crop it
+        #and keep on appending it
+        for srcChunk in pd.read_csv(f'{file[SRC_INDEX]}',chunksize=(10 ** 6)):
+            croppedChunk = aISDM.filter_based_on_lon_lat(srcChunk,lonMin, lonMax, latMin, latMax)
+            croppedDF = croppedDF.append(croppedChunk, ignore_index = True)
+        aISDM.save_data_to_csv(croppedDF,file[DEST_INDEX])
+        print("%s generated"%(file[DEST_INDEX]))
