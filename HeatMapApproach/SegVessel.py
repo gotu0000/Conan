@@ -30,11 +30,10 @@ print(mMSIFile)
 mMSIList = [line.rstrip('\n') for line in open(mMSIFile)]
 
 yearsToConsider = [ \
-                    # 16  \
-                    # ,17 \
-                    17 \
+                    15
+                    , 16
+                    , 17
                     ]
-
 
 monthToConsider = [ \
                     timeUtils.month['Jan']    \
@@ -113,6 +112,7 @@ def segregate_vessel_data(vesselName, dirToStore):
     print(fileName)
     aISDM.save_data_to_csv(sortedVD,fileName)
 
+
 fileCounter = 0
 for file in fileNameList:
 
@@ -124,4 +124,3 @@ for file in fileNameList:
         segregate_vessel_data(name,destDir)
 
     fileCounter = fileCounter + 1
-

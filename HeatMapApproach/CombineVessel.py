@@ -33,9 +33,9 @@ print(destDir)
 mMSIList = [line.rstrip('\n') for line in open(mMSIFile)]
 
 yearsToConsider = [ \
-                    # 16  \
-                    # ,17 \
-                    17 \
+                    15  \
+                    ,16 \
+                    ,17 \
                     ]
 
 

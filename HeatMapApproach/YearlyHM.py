@@ -59,10 +59,22 @@ SOURCE_DIR = sU.convert_boundary_to_string(lonMin \
                                         , latMin \
                                         , latMax \
                                         )
-
+# monthToConsider = [1]
+# monthToConsider = [2]
+# monthToConsider = [3]
+# monthToConsider = [4]
+# monthToConsider = [5]
+# monthToConsider = [6]
+# monthToConsider = [7]
+# monthToConsider = [8]
+# monthToConsider = [9]
+# monthToConsider = [10]
+# monthToConsider = [11]
+monthToConsider = [12]
 fileNameList = []
 for year in yearsToConsider:
-    for monthNum in range(1,13):
+    # for monthNum in range(1,13):
+    for monthNum in monthToConsider:
         fileName = "../Data/"+SOURCE_DIR+"/"+"%02d"%(year)+"_"+"%02d"%(monthNum)+fileSuffix+".csv"
         fileNameList.append(fileName)
 

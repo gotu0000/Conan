@@ -36,25 +36,25 @@ print(destDir)
 #time interval data 
 #useful for indexing
 #based on those indexes 30 different files will be made
-timeIntvlText = "../Data/TimeInterval/HalfHourIntvl1601To1801_00.txt"
+timeIntvlText = "../Data/TimeInterval/HalfHourIntvl1501To1801_00.txt"
 timeWindow = [line.rstrip('\n') for line in open(timeIntvlText)]
 #1 minute slots to augment the data
 timeIntvlTextList = [\
-                    "../Data/TimeInterval/HalfHourIntvl1601To1801_00.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_02.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_04.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_06.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_08.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_10.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_12.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_14.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_16.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_18.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_20.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_22.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_24.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_26.txt"\
-                    ,"../Data/TimeInterval/HalfHourIntvl1601To1801_28.txt"\
+                    "../Data/TimeInterval/HalfHourIntvl1501To1801_00.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1501To1801_02.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1501To1801_04.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1501To1801_06.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1501To1801_08.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1501To1801_10.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1501To1801_12.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1501To1801_14.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1501To1801_16.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1501To1801_18.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1501To1801_20.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1501To1801_22.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1501To1801_24.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1501To1801_26.txt"\
+                    ,"../Data/TimeInterval/HalfHourIntvl1501To1801_28.txt"\
                     ]
 
 #list of time interval lists
@@ -118,7 +118,7 @@ def gen_last_entry_data(sourceDF,start,end):
             
             oneVesselLastData = oneVesselLastData.append(invertedTimelyDF, ignore_index = True)
 
-        if(oneVesselLastData.shape[0] > 2):
+        if(oneVesselLastData.shape[0] > 3):
             opFile = destDir + str(fileStoreCounter) + '.csv'
             fileStoreCounter = fileStoreCounter + 1
             #get the index of DateTime column
@@ -156,5 +156,6 @@ def get_sequence_data_frame(vesselName, trajNum):
     gen_last_entry_data(ret,lowerTimeWinIdx,upperTimeWinIdx)
 
 for mMSI in mMSIList:
-	vname,vTraj = mMSI.split("-")
-	get_sequence_data_frame(vname, vTraj)
+    vname,vTraj = mMSI.split("-")
+    for vTrajNum in range(int(vTraj)):
+        get_sequence_data_frame(vname, str(vTrajNum))
