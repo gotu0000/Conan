@@ -62,7 +62,7 @@ timeWindowList = []
 for file in timeIntvlTextList:
     timeWindowList.append([line.rstrip('\n') for line in open(file)])
 mMSIList = [line.rstrip('\n') for line in open(mMSIListFile)]
-
+# mMSIList = ['477786900-2']
 
 def convert_to_seconds(timeDel):
     return datetime.timedelta.total_seconds(timeDel)
@@ -102,7 +102,9 @@ def gen_last_entry_data(sourceDF,start,end):
     #separated by interval of 1 minute
     for tWin in timeWindowList:
         #initialise empty data frame
-        oneVesselLastData = pd.DataFrame()
+        oneVesselLastDataList = []
+        oneVesselLastDataTemp = pd.DataFrame()
+        oneVesselLastDataList.append(oneVesselLastDataTemp.copy())
         #based on time stamps 
         for timeWinIdx in range(start,end):
             timeSlot = tWin[timeWinIdx]
@@ -116,22 +118,38 @@ def gen_last_entry_data(sourceDF,start,end):
             invertedTimelyDF = aISDM.inver_df(timelyDF)
             invertedTimelyDF = invertedTimelyDF.drop_duplicates(subset="MMSI")
             
-            oneVesselLastData = oneVesselLastData.append(invertedTimelyDF, ignore_index = True)
+            oneVesselLastDataList[-1] = oneVesselLastDataList[-1].append(invertedTimelyDF, ignore_index = True)
+            #put check over here
+            timeIDX = oneVesselLastDataList[-1].columns.get_loc("DateTime")
+            #and if delay is more append this DF into list
+            if(oneVesselLastDataList[-1].shape[0] > 1):
+                secLastTS = oneVesselLastDataList[-1].iloc[-2,timeIDX]
+                lastTS = oneVesselLastDataList[-1].iloc[-1,timeIDX]
+                #check for difference 
+                lastTimeDiff = convert_to_seconds(lastTS - secLastTS)
+                if(lastTimeDiff < 1740):
+                    #remove last row
+                    oneVesselLastDataList[-1] = oneVesselLastDataList[-1].iloc[:-1,:]
+                    #and make fresh DF
+                    oneVesselLastDataList.append(oneVesselLastDataTemp.copy())
 
-        if(oneVesselLastData.shape[0] > 3):
-            opFile = destDir + str(fileStoreCounter) + '.csv'
-            fileStoreCounter = fileStoreCounter + 1
-            #get the index of DateTime column
-            timeIDX = oneVesselLastData.columns.get_loc("DateTime")
-            #get second last and last entry
-            secLastTS = oneVesselLastData.iloc[-2,timeIDX]
-            lastTS = oneVesselLastData.iloc[-1,timeIDX]
-            #check for difference 
-            lastTimeDiff = convert_to_seconds(lastTS - secLastTS)
-            if(lastTimeDiff < 1740):
-                aISDM.save_data_to_csv(oneVesselLastData.iloc[0:-1,:],opFile)
-            else:
-                aISDM.save_data_to_csv(oneVesselLastData,opFile)
+        print(len(oneVesselLastDataList))
+        for oneVesselLastData in oneVesselLastDataList:
+            print(oneVesselLastData)
+            if(oneVesselLastData.shape[0] > 3):
+                opFile = destDir + str(fileStoreCounter) + '.csv'
+                fileStoreCounter = fileStoreCounter + 1
+                #get the index of DateTime column
+                timeIDX = oneVesselLastData.columns.get_loc("DateTime")
+                #get second last and last entry
+                secLastTS = oneVesselLastData.iloc[-2,timeIDX]
+                lastTS = oneVesselLastData.iloc[-1,timeIDX]
+                #check for difference 
+                lastTimeDiff = convert_to_seconds(lastTS - secLastTS)
+                if(lastTimeDiff < 1740):
+                    aISDM.save_data_to_csv(oneVesselLastData.iloc[0:-1,:],opFile)
+                else:
+                    aISDM.save_data_to_csv(oneVesselLastData,opFile)
 
 def get_sequence_data_frame(vesselName, trajNum):
     #read the data sorted data
