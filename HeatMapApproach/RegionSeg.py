@@ -192,29 +192,29 @@ elif(approach == 4):
     
     #FIXME this list can be generated
     fileNameList = [\
-                    ("../Data/RawData/AIS_2017_Zone_15/AIS_2017_01_Zone15.csv", \
+                    ("../Data/RawData/AIS_2017_Zone_18/AIS_2017_01_Zone18.csv", \
                     "../Data/"+DEST_DIR+"/17_01"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_02_Zone15.csv", \
+                    ,("../Data/RawData/AIS_2017_Zone_18/AIS_2017_02_Zone18.csv", \
                     "../Data/"+DEST_DIR+"/17_02"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_03_Zone15.csv", \
+                    ,("../Data/RawData/AIS_2017_Zone_18/AIS_2017_03_Zone18.csv", \
                     "../Data/"+DEST_DIR+"/17_03"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_04_Zone15.csv", \
+                    ,("../Data/RawData/AIS_2017_Zone_18/AIS_2017_04_Zone18.csv", \
                     "../Data/"+DEST_DIR+"/17_04"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_05_Zone15.csv", \
+                    ,("../Data/RawData/AIS_2017_Zone_18/AIS_2017_05_Zone18.csv", \
                     "../Data/"+DEST_DIR+"/17_05"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_06_Zone15.csv", \
+                    ,("../Data/RawData/AIS_2017_Zone_18/AIS_2017_06_Zone18.csv", \
                     "../Data/"+DEST_DIR+"/17_06"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_07_Zone15.csv", \
+                    ,("../Data/RawData/AIS_2017_Zone_18/AIS_2017_07_Zone18.csv", \
                     "../Data/"+DEST_DIR+"/17_07"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_08_Zone15.csv", \
+                    ,("../Data/RawData/AIS_2017_Zone_18/AIS_2017_08_Zone18.csv", \
                     "../Data/"+DEST_DIR+"/17_08"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_09_Zone15.csv", \
+                    ,("../Data/RawData/AIS_2017_Zone_18/AIS_2017_09_Zone18.csv", \
                     "../Data/"+DEST_DIR+"/17_09"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_10_Zone15.csv", \
+                    ,("../Data/RawData/AIS_2017_Zone_18/AIS_2017_10_Zone18.csv", \
                     "../Data/"+DEST_DIR+"/17_10"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_11_Zone15.csv", \
+                    ,("../Data/RawData/AIS_2017_Zone_18/AIS_2017_11_Zone18.csv", \
                     "../Data/"+DEST_DIR+"/17_11"+fileSuffix+".csv") \
-                    ,("../Data/RawData/AIS_2017_Zone_15/AIS_2017_12_Zone15.csv", \
+                    ,("../Data/RawData/AIS_2017_Zone_18/AIS_2017_12_Zone18.csv", \
                     "../Data/"+DEST_DIR+"/17_12"+fileSuffix+".csv") \
                     ]
 

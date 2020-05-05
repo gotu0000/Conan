@@ -46,7 +46,8 @@ for file in fileNameList:
     #load the data csv file data
     dFObj,_ = aISDM.load_data_from_csv(file)
     #drop unnecessary columns
-    droppedDF = aISDM.drop_columns(dFObj)
+    # droppedDF = aISDM.drop_columns(dFObj)
+    droppedDF = aISDM.drop_columns_except_sog(dFObj)
     if(storeInDestDir == 1):
         #get just the file name 
         fileName = file.split("/")[-1]

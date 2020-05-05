@@ -139,6 +139,15 @@ class AISDataManager():
         retDF = dFObj.drop(columns = colList)
         return retDF
 
+    #to drop some columns
+    #to reduce memory usage
+    def drop_columns_except_sog(self,dFObj,colList = ['COG', 'Heading',\
+        'VesselName', 'IMO', 'CallSign', \
+        'VesselType', 'Status', 'Length',\
+        'Width', 'Draft', 'Cargo']):
+        retDF = dFObj.drop(columns = colList)
+        return retDF
+
     #this is to generate data for one vessel
     #append operation may be time consuming
     def get_data_for_one_vessel(self,fileList,mMSINum):
