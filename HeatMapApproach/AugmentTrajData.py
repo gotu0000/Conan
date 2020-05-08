@@ -67,7 +67,8 @@ mMSIList = [line.rstrip('\n') for line in open(mMSIListFile)]
 def convert_to_seconds(timeDel):
     return datetime.timedelta.total_seconds(timeDel)
 
-#get time stamp where minutes are multiple of 30
+multipleMin = 30
+#get time stamp where minutes are multiple of multipleMin
 #and seconds are 0
 #returns interval 
 def get_lower_time(timeStamp):
@@ -83,11 +84,11 @@ def get_lower_time(timeStamp):
 
     hH = int(hHMMSS.split(':')[0])
     mM = hHMMSS.split(':')[1]
-    minMin = (int(mM) // 30)*30
+    minMin = (int(mM) // multipleMin)*multipleMin
     # print(minMin)
 
     startTime = datetime.datetime(yY, monMon, dD, hH, minMin, 0)
-    nextTime = startTime + datetime.timedelta(minutes=30)
+    nextTime = startTime + datetime.timedelta(minutes=multipleMin)
     ret = str(startTime) + ',' + str(nextTime)
     # print(ret)
     return ret
@@ -127,7 +128,7 @@ def gen_last_entry_data(sourceDF,start,end):
                 lastTS = oneVesselLastDataList[-1].iloc[-1,timeIDX]
                 #check for difference 
                 lastTimeDiff = convert_to_seconds(lastTS - secLastTS)
-                if(lastTimeDiff < 1740):
+                if(lastTimeDiff < ((multipleMin-1)*60)):
                     #remove last row
                     oneVesselLastDataList[-1] = oneVesselLastDataList[-1].iloc[:-1,:]
                     #and make fresh DF
@@ -135,8 +136,8 @@ def gen_last_entry_data(sourceDF,start,end):
 
         print(len(oneVesselLastDataList))
         for oneVesselLastData in oneVesselLastDataList:
-            print(oneVesselLastData)
-            if(oneVesselLastData.shape[0] > 3):
+            if(oneVesselLastData.shape[0] > 6):
+                print(oneVesselLastData)
                 opFile = destDir + str(fileStoreCounter) + '.csv'
                 fileStoreCounter = fileStoreCounter + 1
                 #get the index of DateTime column
@@ -146,7 +147,7 @@ def gen_last_entry_data(sourceDF,start,end):
                 lastTS = oneVesselLastData.iloc[-1,timeIDX]
                 #check for difference 
                 lastTimeDiff = convert_to_seconds(lastTS - secLastTS)
-                if(lastTimeDiff < 1740):
+                if(lastTimeDiff < ((multipleMin-1)*60)):
                     aISDM.save_data_to_csv(oneVesselLastData.iloc[0:-1,:],opFile)
                 else:
                     aISDM.save_data_to_csv(oneVesselLastData,opFile)
@@ -174,6 +175,7 @@ def get_sequence_data_frame(vesselName, trajNum):
     gen_last_entry_data(ret,lowerTimeWinIdx,upperTimeWinIdx)
 
 for mMSI in mMSIList:
+# for mMSI in mMSIList[0:1]:
     vname,vTraj = mMSI.split("-")
     for vTrajNum in range(int(vTraj)):
         get_sequence_data_frame(vname, str(vTrajNum))
