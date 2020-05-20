@@ -27,6 +27,7 @@ SRC_FILE_SUFFIX = (config['DROP_COL']['SRC_FILE_SUFFIX'])
 destDir = (config['DROP_COL']['DEST_DIR'])
 #suffix to be added for the dropped data
 droppedSuffix = (config['DROP_COL']['DEST_FILE_SUFFIX'])
+dropType = (int)(config['DROP_COL']['DROP_TYPE'])
 
 #years for which we want to crop the data 2015,1016,1017
 #based on that we can have more data
@@ -46,9 +47,12 @@ for file in fileNameList:
     #load the data csv file data
     dFObj,_ = aISDM.load_data_from_csv(file)
     #drop unnecessary columns
-    # droppedDF = aISDM.drop_columns(dFObj)
-    # droppedDF = aISDM.drop_columns_except_sog(dFObj)
-    droppedDF = aISDM.drop_columns_except_cog(dFObj)
+    if(dropType == 0):
+        droppedDF = aISDM.drop_columns(dFObj)
+    elif(dropType == 1):
+        droppedDF = aISDM.drop_columns_except_sog(dFObj)
+    elif(dropType == 2):
+        droppedDF = aISDM.drop_columns_except_cog(dFObj)
     if(storeInDestDir == 1):
         #get just the file name 
         fileName = file.split("/")[-1]

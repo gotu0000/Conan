@@ -28,12 +28,13 @@ print(mMSIFile)
 #open list of MMSI file
 #and put it into list
 mMSIList = [line.rstrip('\n') for line in open(mMSIFile)]
+yearsToConsider = [int(year) for year in (config['SEG_VESSEL']['YEARS_TO_CONSIDER'].split(','))]
 
-yearsToConsider = [ \
-                    15
-                    , 16
-                    , 17
-                    ]
+# yearsToConsider = [ \
+#                     15
+#                     , 16
+#                     , 17
+#                     ]
 
 monthToConsider = [ \
                     timeUtils.month['Jan']    \
