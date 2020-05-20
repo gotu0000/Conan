@@ -24,6 +24,7 @@ config.read('../MyConfig.INI')
 SOURCE_DIR_NAME = (config['COMBINE_VESSEL']['SOURCE_DIR_NAME'])
 mMSIFile = (config['COMBINE_VESSEL']['MMSI_FILE'])
 destDir = (config['COMBINE_VESSEL']['DEST_DIR'])
+yearsToConsider = [int(year) for year in (config['COMBINE_VESSEL']['YEARS_TO_CONSIDER'].split(','))]
 
 print(SOURCE_DIR_NAME)
 print(mMSIFile)
@@ -32,11 +33,11 @@ print(destDir)
 #and put it into list
 mMSIList = [line.rstrip('\n') for line in open(mMSIFile)]
 
-yearsToConsider = [ \
-                    15  \
-                    ,16 \
-                    ,17 \
-                    ]
+# yearsToConsider = [ \
+#                     15  \
+#                     ,16 \
+#                     ,17 \
+#                     ]
 
 
 monthToConsider = [ \

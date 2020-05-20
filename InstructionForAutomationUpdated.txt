@@ -1,0 +1,201 @@
+#First Get dataset from cadstre
+#Unzip zip files
+#Year 15 16 and 17 data for zone 10 and 11
+#Directory structure
+Data
+----RawData
+--------AIS_2015_Zone_10
+------------AIS_2015_01_Zone10.csv
+------------AIS_2015_02_Zone10.csv
+------------AIS_2015_03_Zone10.csv
+------------AIS_2015_04_Zone10.csv
+------------AIS_2015_05_Zone10.csv
+------------AIS_2015_06_Zone10.csv
+------------AIS_2015_07_Zone10.csv
+------------AIS_2015_08_Zone10.csv
+------------AIS_2015_09_Zone10.csv
+------------AIS_2015_10_Zone10.csv
+------------AIS_2015_11_Zone10.csv
+------------AIS_2015_12_Zone10.csv
+--------AIS_2015_Zone_11
+------------AIS_2015_01_Zone11.csv
+------------AIS_2015_02_Zone11.csv
+------------AIS_2015_03_Zone11.csv
+------------AIS_2015_04_Zone11.csv
+------------AIS_2015_05_Zone11.csv
+------------AIS_2015_06_Zone11.csv
+------------AIS_2015_07_Zone11.csv
+------------AIS_2015_08_Zone11.csv
+------------AIS_2015_09_Zone11.csv
+------------AIS_2015_10_Zone11.csv
+------------AIS_2015_11_Zone11.csv
+------------AIS_2015_12_Zone11.csv
+--------AIS_2016_Zone_10
+------------AIS_2016_01_Zone10.csv
+------------
+------------
+------------AIS_2016_12_Zone10.csv
+--------AIS_2016_Zone_11
+------------AIS_2016_01_Zone11.csv
+------------
+------------
+------------AIS_2016_12_Zone11.csv
+--------AIS_2017_Zone_10
+--------AIS_2017_Zone_11
+----M123_50_M118_50_33_40_37_40
+--------Output
+--------MMSI_15
+------------01
+------------02
+------------03
+------------04
+------------05
+------------06
+------------07
+------------08
+------------09
+------------10
+------------11
+------------12
+--------MMSI_16
+--------MMSI_17
+--------MMSI_15_16_17
+--------MMSI_15_16_17_Traj_1004
+--------MMSI_15_16_17_Traj_1004_Dest
+----TimeInterval
+HeatMapApproach
+
+#then region segment
+Update Config file.
+[REGION]
+LON_MIN = -123.50
+LON_MAX = -118.50
+LAT_MIN = 33.40
+LAT_MAX = 37.40
+
+[REGION_SEG]
+APPROACH = 1
+FILE_SUFFIX =
+YEARS_TO_CONSIDER = 15,16,17
+
+python RegionSeg.py 
+#TODO write about approach
+#it generates data files for the cropped region
+
+Update Config file.
+[DROP_COL]
+SRC_DIR_NAME = M123_50_M118_50_33_40_37_40
+SRC_FILE_SUFFIX =
+DROP_TYPE = 0
+DEST_FILE_SUFFIX = _Dr.csv
+DEST_DIR = ../Data/M123_50_M118_50_33_40_37_40/
+YEARS_TO_CONSIDER = 15,16,17
+
+python DropCol.py
+
+Update Config file.
+[DROP_COL]
+SRC_DIR_NAME = M123_50_M118_50_33_40_37_40
+SRC_FILE_SUFFIX =
+DROP_TYPE = 1
+DEST_FILE_SUFFIX = _Dr_SOG.csv
+DEST_DIR = ../Data/M123_50_M118_50_33_40_37_40/
+YEARS_TO_CONSIDER = 15,16,17
+
+python DropCol.py
+
+Update Config file.
+[DROP_COL]
+SRC_DIR_NAME = M123_50_M118_50_33_40_37_40
+SRC_FILE_SUFFIX =
+DROP_TYPE = 2
+DEST_FILE_SUFFIX = _Dr_COG.csv
+DEST_DIR = ../Data/M123_50_M118_50_33_40_37_40/
+YEARS_TO_CONSIDER = 15,16,17
+
+python DropCol.py
+
+Update Config file.
+[SORT_DATA]
+SRC_DIR_NAME = M123_50_M118_50_33_40_37_40
+SRC_FILE_SUFFIX = _Dr
+DEST_FILE_SUFFIX = _Sort.csv
+DEST_DIR = ../Data/M123_50_M118_50_33_40_37_40/
+YEARS_TO_CONSIDER = 15,16,17
+
+python SortData.py
+
+Update Config file.
+[GEN_VESSEL_LIST_TXT]
+SRC_DIR_NAME = M123_50_M118_50_33_40_37_40
+FILE_SUFFIX = 
+YEARS_TO_CONSIDER = 15,16,17
+DEST_FILE_NAME = ../Data/M123_50_M118_50_33_40_37_40/Output/MMSIList_15_16_17.txt
+
+python GenVesselList.py
+
+Update Config file.
+[SEG_VESSEL]
+SRC_DIR_NAME = M123_50_M118_50_33_40_37_40
+YEARS_TO_CONSIDER = 15,16,17
+MMSI_FILE = ../Data/M123_50_M118_50_33_40_37_40/Output/MMSIList_15_16_17.txt
+
+python SegVessel.py
+
+Update Config file.
+[COMBINE_VESSEL]
+SOURCE_DIR_NAME = ../Data/M123_50_M118_50_33_40_37_40/
+MMSI_FILE = ../Data/M123_50_M118_50_33_40_37_40/Output/MMSIList_15_16_17.txt
+DEST_DIR = ../Data/M123_50_M118_50_33_40_37_40/MMSI_15_16_17/
+YEARS_TO_CONSIDER = 15,16,17
+
+python CombineVessel.py
+
+Update Config file.
+[GEN_VESSEL_TYPE]
+SOURCE_DIR = ../Data/M123_50_M118_50_33_40_37_40/MMSI_15_16_17/
+MMSI_FILE = ../Data/M123_50_M118_50_33_40_37_40/Output/MMSIList_15_16_17.txt
+TYPE_LIST_DEST_FILE = ../Data/M123_50_M118_50_33_40_37_40/Output/MMSITypleList_15_16_17.txt
+DEST_FILE = ../Data/M123_50_M118_50_33_40_37_40/Output/MMSIListType_15_16_17.csv
+
+python GenVesselTypeFile.py
+
+Update Config file.
+[GEN_VESSEL_LIST_OF_TYPE_FROM_RAW_TYPE]
+MMSI_TYPE_FILE = ../Data/M123_50_M118_50_33_40_37_40/Output/MMSIListType_15_16_17.csv
+DESIRED_TYPE = 1004.0
+MMSI_SPEC_TYPE_DEST_FILE = ../Data/M123_50_M118_50_33_40_37_40/Output/MMSIList_15_16_17_1004_0.txt
+
+python GenVesselListBasedOnRawType.py
+
+Update Config file.
+[GEN_VESSEL_LIST_OF_TYPE_FROM_RAW_TYPE]
+MMSI_TYPE_FILE = ../Data/M123_50_M118_50_33_40_37_40/Output/MMSIListType_15_16_17.csv
+DESIRED_TYPE = 1024.0
+MMSI_SPEC_TYPE_DEST_FILE = ../Data/M123_50_M118_50_33_40_37_40/Output/MMSIList_15_16_17_1024_0.txt
+
+python GenVesselListBasedOnRawType.py
+
+Update Config file.
+[GEN_VESSEL_TRAJ]
+SRC_DIR = ../Data/M123_50_M118_50_33_40_37_40/MMSI_15_16_17/
+MMSI_FILE = ../Data/M123_50_M118_50_33_40_37_40/Output/MMSIList_15_16_17_1004_0.txt
+DEST_DIR = ../Data/M123_50_M118_50_33_40_37_40/MMSI_15_16_17_Traj_1004/
+
+python GenVesselTraj.py
+
+Update Config file.
+[ASSIGN_DESTINATION]
+SRC_DIR = ../Data/M123_50_M118_50_33_40_37_40/MMSI_15_16_17_Traj_1004/
+SRC_TEXT_FILE = ../Data/M123_50_M118_50_33_40_37_40/MMSI_15_16_17_Traj_1004/VesselTrajCount.txt
+DEST_DIR = ../Data/M123_50_M118_50_33_40_37_40/MMSI_15_16_17_Traj_1004_Dest/
+
+Run AssignDestinationLastPoint.ipynb notebook
+
+Update Config file.
+[AUGMENT_TRAJ_DATA]
+SRC_DIR = ../Data/M123_50_M118_50_33_40_37_40/MMSI_15_16_17_Traj_1004_Dest/
+DEST_DIR = ../Data/M123_50_M118_50_33_40_37_40/Traj_15_16_17_1004/
+MMSI_LIST = ../Data/M123_50_M118_50_33_40_37_40/MMSI_15_16_17_Traj_1004/VesselTrajCount.txt
+
+python AugmentTrajData.py

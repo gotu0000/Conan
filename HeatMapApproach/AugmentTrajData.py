@@ -136,7 +136,7 @@ def gen_last_entry_data(sourceDF,start,end):
 
         print(len(oneVesselLastDataList))
         for oneVesselLastData in oneVesselLastDataList:
-            if(oneVesselLastData.shape[0] > 6):
+            if(oneVesselLastData.shape[0] > 3):
                 print(oneVesselLastData)
                 opFile = destDir + str(fileStoreCounter) + '.csv'
                 fileStoreCounter = fileStoreCounter + 1
