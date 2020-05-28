@@ -4,6 +4,7 @@ from keras.models import load_model
 from keras.models import Model
 import configparser
 from sklearn.preprocessing import OneHotEncoder
+from keras import backend as K
 
 #CONAN_PRED.INI stores all the run time constants
 config = configparser.ConfigParser()
@@ -84,13 +85,44 @@ def run_lstm(lat_t1, lon_t1, lat_t2, lon_t2, spd, brg, cls):
 if __name__ == "__main__":
     ret = run_lstm(34.29972, -120.41112, 34.27673, -120.30972, 10.1, 92, 0);
     print(ret)
-    ret = run_lstm(np.array([34.29972, 34.27673]) \
-             , np.array([-120.41112, -120.30972]) \
-             , np.array([34.27673,34.25507]) \
-             , np.array([-120.30972,-120.21332]) \
-             , np.array([10.1,10.1]) \
-             , np.array([92, 92]) \
-             , np.array([0,0])); 
+    print(model.get_config())
+    lon_t1 = -120.41112
+    lon_t2 = -120.30972
+    lat_t1 = 34.29972
+    lat_t2 = 34.27673
+
+    lon_t1_norm = (lon_t1 - lonMin)/(lonMax - lonMin)
+    lon_t2_norm = (lon_t2 - lonMin)/(lonMax - lonMin)
+    lat_t1_norm = (lat_t1 - latMin)/(latMax - latMin)
+    lat_t2_norm = (lat_t2 - latMin)/(latMax - latMin)
+
+    training_data = np.array([[lon_t1_norm, lat_t1_norm, 1, 0]
+                            ,[lon_t2_norm, lat_t2_norm, 1, 0]])
+
+    training_data = np.reshape(training_data, (1,training_data.shape[0],training_data.shape[1]))
+    
+    inp = model.input                                           # input placeholder
+    outputs = [layer.output for layer in model.layers]          # all layer outputs
+    functors = [K.function([inp], [out]) for out in outputs[1:]]    # evaluation functions
+
+    layer_outs = [func([training_data]) for func in functors]
+    print(type(layer_outs))
+    for op in layer_outs:
+        print("****************")
+        print(type(op))
+        print(len(op))
+        print(op[0].shape)
+        print(op)
+    '''
+    '''
+    # ret = run_lstm(np.array([34.29972, 34.27673]) \
+    #          , np.array([-120.41112, -120.30972]) \
+    #          , np.array([34.27673,34.25507]) \
+    #          , np.array([-120.30972,-120.21332]) \
+    #          , np.array([10.1,10.1]) \
+    #          , np.array([92, 92]) \
+    #          , np.array([0,0])); 
+    # print(ret)
 #     firstLat = 34.29972
 #     fisrtLon = -120.41112
 #     secLat = 34.27673
