@@ -66,6 +66,8 @@ Data
 --------MMSI_15_16_17_Traj_1004_Dest
 --------MMSI_15_16_17_Traj_1024
 --------MMSI_15_16_17_Traj_1024_Dest
+--------Traj_15_16_17_1004
+--------Traj_15_16_17_1024
 ----TimeInterval
 HeatMapApproach
 
