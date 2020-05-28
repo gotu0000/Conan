@@ -96,7 +96,10 @@ def compute_avg_cog(localDf):
 
 for file in fileNameList:
     tempData,_ = aISDM.load_data_from_csv(file)
-    tempData = tempData.drop(columns = ['MMSI', 'BaseDateTime', 'DateTime', 'TypeBool'])
+    if('DateTime' in list(tempData.columns)):
+   	    tempData = tempData.drop(columns = ['MMSI', 'BaseDateTime', 'DateTime', 'TypeBool'])
+    else:
+   	    tempData = tempData.drop(columns = ['MMSI', 'BaseDateTime', 'TypeBool'])
     cOGDF = cOGDF.append(tempData, ignore_index = True)
 
 compute_avg_cog(cOGDF)
