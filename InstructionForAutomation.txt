@@ -1,0 +1,212 @@
+#First Get dataset from cadstre
+#Unzip zip files
+#Year 15 16 and 17  data for region 10 and 11
+#then region segment
+
+Update Config file.
+[REGION]
+LON_MIN = -126.00
+LON_MAX = -116.00
+LAT_MIN = 32.00
+LAT_MAX = 39.00
+
+[REGION_SEG]
+APPROACH = 1
+FILE_SUFFIX =
+YEARS_TO_CONSIDER = 16,17
+
+python RegionSeg.py 
+#TODO write about approach
+#it generates data files for the cropped region
+
+Update Config file.
+[DROP_COL]
+SRC_DIR_NAME = M126_00_M116_00_32_00_39_00
+SRC_FILE_SUFFIX =
+DEST_FILE_SUFFIX = _Dr.csv
+DEST_DIR = ../Data/M126_00_M116_00_32_00_39_00/
+YEARS_TO_CONSIDER = 16,17
+
+python DropCol.py
+
+Update Config file.
+[SORT_DATA]
+SRC_DIR_NAME = M126_00_M116_00_32_00_39_00
+SRC_FILE_SUFFIX = _Dr
+DEST_FILE_SUFFIX = _Sort.csv
+DEST_DIR = ../Data/M126_00_M116_00_32_00_39_00/
+YEARS_TO_CONSIDER = 16,17
+
+python SortData.py
+
+Update Config file.
+[GEN_VESSEL_LIST_TXT]
+SRC_DIR_NAME = M126_00_M116_00_32_00_39_00
+FILE_SUFFIX = 
+YEARS_TO_CONSIDER = 16
+DEST_FILE_NAME = ../Data/M126_00_M116_00_32_00_39_00/Output/MMSIList_16.txt
+
+python GenVesselList.py
+
+Update Config file.
+[GEN_VESSEL_LIST_TXT]
+SRC_DIR_NAME = M126_00_M116_00_32_00_39_00
+FILE_SUFFIX = 
+YEARS_TO_CONSIDER = 17
+DEST_FILE_NAME = ../Data/M126_00_M116_00_32_00_39_00/Output/MMSIList_17.txt
+
+python GenVesselList.py
+
+Update Config file.
+[SEG_VESSEL]
+SRC_DIR_NAME = M126_00_M116_00_32_00_39_00
+DEST_DIR = ../Data/M126_00_M116_00_32_00_39_00/MMSI_17/
+MMSI_FILE = ../Data/M126_00_M116_00_32_00_39_00/Output/MMSIList_17.txt
+
+python GenVesselList.py
+
+python SegVessel.py
+
+python CombineVessel.py
+
+Update Config file.
+[GEN_VESSEL_TYPE]
+SOURCE_DIR = ../Data/M126_00_M116_00_32_00_39_00/MMSI_17/
+MMSI_FILE = ../Data/M126_00_M116_00_32_00_39_00/Output/MMSIList_17.txt
+TYPE_LIST_DEST_FILE = ../Data/M126_00_M116_00_32_00_39_00/Output/MMSITypleList_17.txt
+DEST_FILE = ../Data/M126_00_M116_00_32_00_39_00/Output/MMSIListType_17.csv
+
+python GenVesselTypeFile.py
+
+Update Config file.
+[GEN_VESSEL_LIST_OF_TYPE_FROM_RAW_TYPE]
+MMSI_TYPE_FILE = ../Data/M126_00_M116_00_32_00_39_00/Output/MMSIListType_17.csv
+DESIRED_TYPE = 1004.0
+MMSI_SPEC_TYPE_DEST_FILE = ../Data/M126_00_M116_00_32_00_39_00/Output/MMSIList_17_1004_0.txt
+
+python GenVesselListBasedOnRawType.py
+
+Update Config file.
+[GEN_VESSEL_LIST_OF_TYPE_FROM_RAW_TYPE]
+MMSI_TYPE_FILE = ../Data/M126_00_M116_00_32_00_39_00/Output/MMSIListType_17.csv
+DESIRED_TYPE = 1024.0
+MMSI_SPEC_TYPE_DEST_FILE = ../Data/M126_00_M116_00_32_00_39_00/Output/MMSIList_17_1024_0.txt
+
+python GenVesselListBasedOnRawType.py
+
+Update Config file.
+[ASSIGN_CARGO_COL]
+SRC_DIR_NAME = M126_00_M116_00_32_00_39_00
+SRC_FILE_SUFFIX = _Dr_Sort
+DEST_FILE_SUFFIX = _1004.csv
+DEST_DIR = ../Data/M126_00_M116_00_32_00_39_00/
+VESSEL_INFO = ../Data/M126_00_M116_00_32_00_39_00/Output/MMSIList_17_1004_0.txt
+SUB_TYPE_STR = 1004
+YEARS_TO_CONSIDER = 17
+
+python AssignCargoCol.py
+
+Update Config file.
+[ASSIGN_CARGO_COL]
+SRC_DIR_NAME = M126_00_M116_00_32_00_39_00
+SRC_FILE_SUFFIX = _Dr_Sort
+DEST_FILE_SUFFIX = _1024.csv
+DEST_DIR = ../Data/M126_00_M116_00_32_00_39_00/
+VESSEL_INFO = ../Data/M126_00_M116_00_32_00_39_00/Output/MMSIList_17_1024_0.txt
+SUB_TYPE_STR = 1024
+YEARS_TO_CONSIDER = 17
+
+python AssignCargoCol.py
+
+Update Config file.
+[HEATMAP]
+LON_MIN = -126.00
+LON_MAX = -116.00
+LAT_MIN = 32.00
+LAT_MAX = 39.00
+
+INCR_STEP = 0.01
+INCR_RES = 2
+FILE_SUFFIX = _Dr_Sort_1004
+YEARS_TO_CONSIDER = 17
+OUTPUT_FILE = ../Data/M126_00_M116_00_32_00_39_00/Output/YearlyHM_17_1004.npy
+
+python YearlyHM.py
+
+Update Config file.
+[HEATMAP]
+LON_MIN = -126.00
+LON_MAX = -116.00
+LAT_MIN = 32.00
+LAT_MAX = 39.00
+
+INCR_STEP = 0.01
+INCR_RES = 2
+FILE_SUFFIX = _Dr_Sort_1024
+YEARS_TO_CONSIDER = 17
+OUTPUT_FILE = ../Data/M126_00_M116_00_32_00_39_00/Output/YearlyHM_17_1024.npy
+
+python YearlyHM.py
+
+Update Config file.
+[HEATMAP_VISUAL]
+LON_MIN = -126.00
+LON_MAX = -116.00
+LAT_MIN = 32.00
+LAT_MAX = 39.00
+
+INCR_STEP = 0.01
+INCR_RES = 2
+INPUT_FILE = ../Data/M126_00_M116_00_32_00_39_00/Output/YearlyHM_17_1004.npy
+OUTPUT_FILE = ../Data/M126_00_M116_00_32_00_39_00/Output/17_1004_HM.png
+TITLE_STR = 2017 Cargo Heatmap
+
+Run Notebook file YearlyHMVisual.ipynb
+
+Update Config file.
+[HEATMAP_VISUAL]
+LON_MIN = -126.00
+LON_MAX = -116.00
+LAT_MIN = 32.00
+LAT_MAX = 39.00
+
+INCR_STEP = 0.01
+INCR_RES = 2
+INPUT_FILE = ../Data/M126_00_M116_00_32_00_39_00/Output/YearlyHM_17_1024.npy
+OUTPUT_FILE = ../Data/M126_00_M116_00_32_00_39_00/Output/17_1024_HM.png
+TITLE_STR = 2017 Tanker Heatmap
+
+Run Notebook file YearlyHMVisual.ipynb
+
+Update Config file.
+[GEN_VESSEL_LAST_ENTRY_DATA]
+SRC_DIR = ../Data/M126_00_M116_00_32_00_39_00/MMSI_17/
+DEST_DIR = ../Data/M126_00_M116_00_32_00_39_00/MMSI_17_1004/
+MMSI_LIST = ../Data/M126_00_M116_00_32_00_39_00/Output/MMSIList_17_1004_0.txt
+
+python GenVesselLastEntryDataEx.py
+
+Update Config file.
+[GEN_VESSEL_LAST_ENTRY_DATA]
+SRC_DIR = ../Data/M126_00_M116_00_32_00_39_00/MMSI_17/
+DEST_DIR = ../Data/M126_00_M116_00_32_00_39_00/MMSI_17_1024/
+MMSI_LIST = ../Data/M126_00_M116_00_32_00_39_00/Output/MMSIList_17_1024_0.txt
+
+python GenVesselLastEntryDataEx.py
+
+Update Config file.
+[CLEAN_MISSING_LEN_DATA]
+SRC_DIR = ../Data/M126_00_M116_00_32_00_39_00/MMSI_17_1004/
+START = 0
+END = 227283
+DEST_DIR = ../Data/M126_00_M116_00_32_00_39_00/MMSI_17_1004_LEN/
+
+python CleanMissingLenData.py
+
+Update Config file.
+[CLEAN_MISSING_LEN_DATA]
+SRC_DIR = ../Data/M126_00_M116_00_32_00_39_00/MMSI_17_1024/
+START = 0
+END = 127537
+DEST_DIR = ../Data/M126_00_M116_00_32_00_39_00/MMSI_17_1024_LEN/
+python CleanMissingLenData.py
